@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AZ.Dapper.LambdaExtension" Version="1.2.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.2" />
+    <PackageReference Include="MySql.Data" Version="8.0.11" />
+    <PackageReference Include="Z.EntityFramework.Plus.BatchDelete.EFCore" Version="1.7.18" />
+    <PackageReference Include="Z.EntityFramework.Plus.BatchUpdate.EFCore" Version="1.7.18" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SV.Common\SV.Common.csproj" />
+    <ProjectReference Include="..\SV.Entity\SV.Entity.csproj" />
+    <ProjectReference Include="..\SV.Repository.Core\SV.Repository.Core.csproj" />
+  </ItemGroup>
+
+</Project>
