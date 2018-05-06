@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ED.Models.Auditing
+namespace SV.Entity.Auditing
 {
     public interface IModificationAudited
     {

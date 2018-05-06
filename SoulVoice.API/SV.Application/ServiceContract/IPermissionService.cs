@@ -1,15 +1,16 @@
-﻿using ED.Application.Dtos;
+﻿//using SV.Application.Input;
+//using SV.Application.Output;
 
-namespace ED.Application.ServiceContract
-{
-    public interface IPermissionService
-    {
-        GetResults<BaseEntityDto> GetPermissions(PageInput input);
+//namespace ED.Application.ServiceContract
+//{
+//    public interface IPermissionService
+//    {
+//        GetResults<BaseEntityDto> GetPermissions(PageInput input);
 
-        UpdateResult UpdatePermission(BaseEntityDto action);
+//        UpdateResult UpdatePermission(BaseEntityDto action);
 
-        CreateResult<int> CreatePermission(BaseEntityDto action);
+//        CreateResult<int> CreatePermission(BaseEntityDto action);
 
-        DeleteResult DeletePermission(int actionId);
-    }
-}
+//        DeleteResult DeletePermission(int actionId);
+//    }
+//}

@@ -5,20 +5,10 @@ using SV.Common.Options;
 
 namespace SV.Repository.Base
 {
-    public class DapperContext 
+    public class DapperContext :IDisposable
     {
-        private DbContextOption _option;
+        private readonly DbContextOption _option;
 
-        //private readonly string _connstr = Global.QueryDB;
-        //public DapperContext()
-        //{
-        //}
-
-        //public DapperContext(string connstr)
-        //{
-
-        //    _connstr = connstr;
-        //}
         public DapperContext(DbContextOption option)
         {
             if (option == null)
@@ -27,6 +17,8 @@ namespace SV.Repository.Base
                 throw new ArgumentNullException(nameof(option.QueryString));
             _option = option;
         }
+
+       
         public IDbConnection GetConnection()
         {
             var conn = new MySqlConnection(_option.QueryString);
@@ -81,9 +73,13 @@ namespace SV.Repository.Base
             {
                 msg = ex.Message;
             }
-
-
+            
             return new Tuple<bool, string>(isopen, msg);
+        }
+
+        public void Dispose()
+        {
+            this.Dispose();
         }
 
 

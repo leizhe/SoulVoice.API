@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using ED.Common;
-using ED.Repositories.Core;
 using Microsoft.EntityFrameworkCore;
-using SV.Repository.Base;
+using SV.Repository.Core;
 using Z.EntityFramework.Plus;
 
-namespace ED.Repositories.EntityFramework
+namespace SV.Repository.Base
 {
     public class EntityFrameworkRepositoryBase<TEntity> : IEntityFrameworkCommandRepository<TEntity>, IDisposable
          where TEntity : class
@@ -20,10 +17,7 @@ namespace ED.Repositories.EntityFramework
         {
             _context = context;
         }
-
-        //private readonly ThreadLocal<EntityFrameworkContext> _localCtx = new ThreadLocal<EntityFrameworkContext>(() => new EntityFrameworkContext(Global.CommandDB));
-
-        //public EntityFrameworkContext Context => _localCtx.Value;
+        
 
 
         public void Add(TEntity entity)
@@ -75,12 +69,12 @@ namespace ED.Repositories.EntityFramework
         public void Commit()
         {
             _context.SaveChanges();
-            //Dispose();
         }
 
         public void Dispose()
         {
             _context.Dispose();
+            this.Dispose();
         }
 
 

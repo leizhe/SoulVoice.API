@@ -1,14 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
-using Dapper.LambdaExtension.Extentions;
-using SV.Common.Extensions;
+using System.Reflection;
+using System.Text.RegularExpressions;
+using DapperExtensions;
+using SV.Entity.Auditing;
 using SV.Repository.Core;
 
 namespace SV.Repository.Base
 {
-    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>
-        where TEntity : class
+    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>,IDisposable
+        where TEntity : class, IEntity
     {
 
         protected readonly DapperContext Context;
@@ -17,109 +21,113 @@ namespace SV.Repository.Base
         {
             Context = context;
         }
-
-        //private readonly ThreadLocal<DapperContext> _localCtx = new ThreadLocal<DapperContext>(() => new DapperContext());
-
-        //protected DapperContext DbContext => _localCtx.Value;
-
-        public TEntity FindSingle(Expression<Func<TEntity, bool>> exp = null)
+        
+        #region 数据查询
+        public TEntity FindSingle(object id)
         {
-            return Filter(exp).FirstOrDefault();
-            //using (var db = _context.GetConnection())
-            //{
-            //    return db.QueryFirstOrDefault(exp);
-            //}
-        }
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> exp = null)
-        {
-            return Filter(exp);
-        }
-    
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageNumber), pageNumber, "pageNumber must great than or equal to 1.");
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize), pageSize, "pageSize must great than or equal to 1.");
             using (var db = Context.GetConnection())
             {
-                var query = db.Query<TEntity>().AsQueryable().Where(expression);
-                var skip = (pageNumber - 1) * pageSize;
-                var take = pageSize;
-                if (sortPredicate == null)
-                    throw new InvalidOperationException("Based on the paging query must specify sorting fields and sort order.");
+                return db.Get<TEntity>(id);
+            }
+        
+        }
 
-                switch (sortOrder)
+        public TEntity FindSingle(Expression<Func<TEntity, bool>> expression = null, object sortList = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                var sort = SortConvert(sortList);
+                var data = db.GetSet<TEntity>(predicate, sort, 0, 1);
+                return data.FirstOrDefault();
+            }
+        }
+      
+        public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression, object sortList = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                IList<ISort> sort = SortConvert(sortList);//转换排序接口
+                if (expression == null)
                 {
-                    case SortOrder.Ascending:
-                        var pagedAscending = query.SortBy(sortPredicate).Skip(skip).Take(take);
-
-                        return pagedAscending;
-                    case SortOrder.Descending:
-                        var pagedDescending = query.SortByDescending(sortPredicate).Skip(skip).Take(take);
-                        return pagedDescending;
+                    //允许脏读
+                    return db.GetList<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));//如果条件为Null 就查询所有数据
                 }
-
-                throw new InvalidOperationException("Based on the paging query must specify sorting fields and sort order.");
-            }
-            
-        }
-
-        public IQueryable<TEntity> FindQueryable(IQueryable<TEntity> q,Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, SortOrder sortOrder, int pageNumber, int pageSize)
-        {
-            if (pageNumber <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageNumber), pageNumber, "pageNumber must great than or equal to 1.");
-            if (pageSize <= 0)
-                throw new ArgumentOutOfRangeException(nameof(pageSize), pageSize, "pageSize must great than or equal to 1.");
-            using (var db = Context.GetConnection())
-            {
-                var query = q.AsQueryable().Where(expression);
-                var skip = (pageNumber - 1) * pageSize;
-                var take = pageSize;
-                if (sortPredicate == null)
-                    throw new InvalidOperationException("Based on the paging query must specify sorting fields and sort order.");
-
-                switch (sortOrder)
+                else
                 {
-                    case SortOrder.Ascending:
-                        var pagedAscending = query.SortBy(sortPredicate).Skip(skip).Take(take);
-
-                        return pagedAscending;
-                    case SortOrder.Descending:
-                        var pagedDescending = query.SortByDescending(sortPredicate).Skip(skip).Take(take);
-                        return pagedDescending;
+                    var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                    return db.GetList<TEntity>(predicate, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
                 }
-
-                throw new InvalidOperationException("Based on the paging query must specify sorting fields and sort order.");
             }
 
         }
 
-        private IQueryable<TEntity> Filter(Expression<Func<TEntity, bool>> exp)
+        public IEnumerable<TEntity> Page(int pageNum, int pageSize, out long outTotal,
+            Expression<Func<TEntity, bool>> expression = null, object sortList = null)
         {
             using (var db = Context.GetConnection())
             {
-                var dbSet = db.Query<TEntity>().AsQueryable();
-                if (exp != null)
-                    dbSet = dbSet.Where(exp);
-                return dbSet;
+                IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression); //转换Linq表达式
+                IList<ISort> sort = SortConvert(sortList);//转换排序接口
+                var entities = db.GetPage<TEntity>(predicate, sort, pageNum, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                outTotal = db.Count<TEntity>(null);
+                return entities;
+            }
+
+        }
+
+        public long Count(Expression<Func<TEntity, bool>> expression = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                return db.Count<TEntity>(predicate);
             }
         }
 
-        public int GetCount(Expression<Func<TEntity, bool>> exp = null)
+        public bool Exists(Expression<Func<TEntity, bool>> expression)
         {
-            return Filter(exp).Count();
+            var ct = Count(expression);
+            return ct > 0;
         }
 
-        //public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, Common.Extensions.SortOrder sortOrder, int pageNumber, int pageSize)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        #endregion
 
-        //public IQueryable<TEntity> FindQueryable(IQueryable<TEntity> q, Expression<Func<TEntity, bool>> expression, Expression<Func<TEntity, dynamic>> sortPredicate, Common.Extensions.SortOrder sortOrder, int pageNumber, int pageSize)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        #region 辅助方法
+        /// <summary>
+        /// 转换成Dapper排序方式
+        /// </summary>
+        /// <param name="sortList"></param>
+        /// <returns></returns>
+        private static IList<ISort> SortConvert(object sortList)
+        {
+            IList<ISort> sorts = new List<ISort>();
+            if (sortList == null)
+            {
+                sorts.Add(Predicates.Sort<TEntity>(f => f.Id, false));//默认以Id asc=flase 降序
+                return sorts;
+            }
+
+            Type obj = sortList.GetType();
+            var fields = obj.GetRuntimeFields();
+            foreach (FieldInfo f in fields)
+            {
+                var s = new Sort();
+                var mt = Regex.Match(f.Name, @"^\<(.*)\>.*$");
+                s.PropertyName = mt.Groups[1].Value;
+                s.Ascending = f.GetValue(sortList) == null || (bool)f.GetValue(sortList);
+                sorts.Add(s);
+            }
+
+            return sorts;
+        }
+
+        public void Dispose()
+        {
+            Context.Dispose();
+            this.Dispose();
+        }
+        #endregion
+
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-namespace ED.Models.Command
+namespace SV.Entity.Command
 {
     public class BaseEntityC
     {

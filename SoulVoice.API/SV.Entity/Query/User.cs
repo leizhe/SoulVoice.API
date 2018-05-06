@@ -1,35 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
-using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
-using ED.Models.Auditing;
+using DapperExtensions.Mapper;
+using SV.Entity.Auditing;
 
-namespace ED.Models.Query
+namespace SV.Entity.Query
 {
-    [DBTable("User")]
-    public class User : BaseEntityQ, ICreationAudited
+    [Serializable]
+    public class User : BaseEntityQ, IHasCreationTime
     {
-
-        public string Name { get; set; }
-
-        public string Password { get; set; }
-
         public string Email { get; set; }
+        public string Phone { get; set; }
+        
+        public string Password { get; set; }
+        
+        public string IdCard { get; set; }
 
-        public string RealName { get; set; }
-
-        public long? CreatorUserId { get; set; }
+        public decimal Money { get; set; }
+        
+        public string Alipay { get; set; }
+        
+        public string WeChat { get; set; }
+        
+        public string ApplePay { get; set; }
 
         public DateTime CreationTime { get; set; }
 
         public int State { get; set; }
 
-        [DBIgnore]
-        public ICollection<UserRole> UserRoles { get; set; }
 
-        public User()
+        public Role Role { get; set; }
+        
+    }
+    [Serializable]
+    public sealed class UserOrmMapper : ClassMapper<User>
+    {
+        public UserOrmMapper()
         {
-            this.UserRoles = new List<UserRole>();
+            base.Table("User");
+            Map(f => f.Role).Ignore();//设置忽略
+            //Map(f => f.Name).Key(KeyType.Identity);//设置主键  (如果主键名称不包含字母“ID”，请设置)      
+            AutoMap();
         }
-
     }
 }

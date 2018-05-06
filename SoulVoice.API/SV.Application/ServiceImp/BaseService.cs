@@ -1,4 +1,4 @@
-﻿namespace ED.Application.ServiceImp
+﻿namespace SV.Application.ServiceImp
 {
     public class BaseService
     {

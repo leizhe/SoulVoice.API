@@ -1,31 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using ED.Models.Auditing;
+using System.ComponentModel.DataAnnotations;
+using SV.Entity.Auditing;
 
-namespace ED.Models.Command
+namespace SV.Entity.Command
 {
-    public class User : BaseEntityC, ICreationAudited
+    public class User : BaseEntityC, IHasCreationTime
     {
-       
-        public string Name { get; set; }
+        [MaxLength(100)]
+        public string Email { get; set; }
+        [MaxLength(100)]
+        public string Phone { get; set; }
 
+        [MaxLength(50)]
         public string Password { get; set; }
 
-        public string Email { get; set; }
-
-        public string RealName { get; set; }
-
-        public long? CreatorUserId { get; set; }
+        [MaxLength(50)]
+        public string IdCard { get; set; }
+        
+        public decimal Money { get; set; }
+        
+        public string Alipay { get; set; }
+        public string WeChat { get; set; }
+        
+        public string ApplePay { get; set; }
 
         public DateTime CreationTime { get; set; }
 
         public int State { get; set; }
 
-        public virtual ICollection<UserRole> UserRoles { get; set; }
+        public Role Role { get; set; }
 
-        public User()
-        {
-            this.UserRoles = new List<UserRole>();
-        }
+       
+
+
     }
 }

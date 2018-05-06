@@ -1,31 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
-using ED.Models.Auditing;
+using DapperExtensions.Mapper;
 
-namespace ED.Models.Query
+namespace SV.Entity.Query
 {
-    [DBTable("Role")]
-    public class Role : BaseEntityQ, ICreationAudited
+    public class Role : BaseEntityQ
     {
-        public string RoleName { get; set; }
-
-        public long? CreatorUserId { get; set; }
-
-        public DateTime CreationTime { get; set; }
-
-        [DBIgnore]
-        public  ICollection<RolePermission> RolePermissions { get; set; }
-
-        [DBIgnore]
-        public  ICollection<UserRole> UserRoles { get; set; }
-
-        public Role()
+        public string Name { get; set; }
+        public string Memo { get; set; }
+    }
+    [Serializable]
+    public sealed class RoleOrmMapper : ClassMapper<Role>
+    {
+        public RoleOrmMapper()
         {
-            RolePermissions = new HashSet<RolePermission>();
-            UserRoles = new HashSet<UserRole>();
+            base.Table("Role");
+            AutoMap();
         }
-
-       
     }
 }

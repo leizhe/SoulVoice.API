@@ -1,11 +1,11 @@
 ﻿
-using Dapper.LambdaExtension.LambdaSqlBuilder.Attributes;
+using System.ComponentModel.DataAnnotations;
 
-namespace ED.Models.Query
+namespace SV.Entity.Query
 {
     public class BaseEntityQ
     {
-        [DBKey]
+        [Key]
         public long Id { get; set; }
     }
 }

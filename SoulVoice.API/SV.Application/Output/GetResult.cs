@@ -1,4 +1,4 @@
-﻿namespace ED.Application.Dtos
+﻿namespace SV.Application.Output
 {
     public class GetResult<T> : OutputBase
     {

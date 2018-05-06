@@ -1,15 +1,15 @@
-﻿using ED.Application.Dtos;
+﻿//using SV.Application.Output;
 
-namespace ED.Application.ServiceContract
-{
-    public interface IRoleService
-    {
-        GetResults<RoleDto> GetRoles(RoleInput input);
+//namespace ED.Application.ServiceContract
+//{
+//    public interface IRoleService
+//    {
+//        GetResults<RoleDto> GetRoles(RoleInput input);
 
-        CreateResult<int> CreateRole(RoleDto role);
+//        CreateResult<int> CreateRole(RoleDto role);
 
-        UpdateResult UpdateRole(RoleDto role);
+//        UpdateResult UpdateRole(RoleDto role);
 
-        DeleteResult DeleteRole(int roleId);
-    }
-}
+//        DeleteResult DeleteRole(int roleId);
+//    }
+//}
