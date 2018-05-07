@@ -11,6 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Command\BaseEntityC.cs" />
+    <Compile Remove="Query\BaseEntityQ.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="1.50.4" />
     <PackageReference Include="DapperExtensionsAspNetCore" Version="1.0.0" />
   </ItemGroup>

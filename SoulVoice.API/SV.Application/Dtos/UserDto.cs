@@ -6,6 +6,7 @@ namespace SV.Application.Dtos
 {
     public class UserDto :BaseEntityDto
     {
+        public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
 

@@ -1,10 +1,9 @@
-﻿//using ED.Models.Command;
-//using SV.Repository.Core;
+﻿using SV.Entity.Command;
 
-//namespace ED.Repositories.Core.Command
-//{
-//    public interface IUserCommandRepository : IEntityFrameworkCommandRepository<User>
-//    {
-         
-//    }
-//}
+namespace SV.Repository.Core.Command
+{
+    public interface IUserCommandRepository : IEntityFrameworkCommandRepository<User>
+    {
+
+    }
+}

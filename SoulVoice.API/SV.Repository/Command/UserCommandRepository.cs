@@ -1,14 +1,13 @@
-﻿
-//using ED.Models.Command;
-//using ED.Repositories.Core.Command;
-//using ED.Repositories.EntityFramework;
+﻿using SV.Entity.Command;
+using SV.Repository.Base;
+using SV.Repository.Core.Command;
 
-//namespace ED.Repositories.Command
-//{
-//    public class UserCommandRepository : EntityFrameworkRepositoryBase<User>, IUserCommandRepository
-//    {
-//        public UserCommandRepository(EntityFrameworkContext context) : base(context)
-//        {
-//        }
-//    }
-//}
+namespace SV.Repository.Command
+{
+    public class UserCommandRepository : EntityFrameworkRepositoryBase<User>, IUserCommandRepository
+    {
+        public UserCommandRepository(EntityFrameworkContext context) : base(context)
+        {
+        }
+    }
+}

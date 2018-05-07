@@ -3,7 +3,7 @@ using DapperExtensions.Mapper;
 
 namespace SV.Entity.Query
 {
-    public class Role : BaseEntityQ
+    public class Role : BaseEntity
     {
         public string Name { get; set; }
         public string Memo { get; set; }

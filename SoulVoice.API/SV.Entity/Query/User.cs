@@ -5,8 +5,9 @@ using SV.Entity.Auditing;
 namespace SV.Entity.Query
 {
     [Serializable]
-    public class User : BaseEntityQ, IHasCreationTime
+    public class User : BaseEntity, IHasCreationTime, IEntity
     {
+        public string Name { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         

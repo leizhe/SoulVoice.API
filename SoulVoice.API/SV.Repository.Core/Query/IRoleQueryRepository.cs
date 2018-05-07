@@ -1,9 +1,9 @@
-﻿//using ED.Models.Query;
+﻿//using SV.Entity.Query;
 
-//namespace ED.Repositories.Core.Query
+//namespace SV.Repository.Core.Query
 //{
 //    public interface IRoleQueryRepository : IDapperQueryRepository<Role>
 //    {
-         
+
 //    }
 //}

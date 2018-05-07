@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SV.Common\SV.Common.csproj" />
+    <ProjectReference Include="..\SV.Entity\SV.Entity.csproj" />
   </ItemGroup>
 
 </Project>

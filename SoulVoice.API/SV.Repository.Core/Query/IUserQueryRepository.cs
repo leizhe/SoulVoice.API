@@ -1,14 +1,11 @@
-﻿//using System.Collections.Generic;
-//using System.Linq;
-//using ED.Models.Query;
+﻿using System.Collections.Generic;
+using SV.Entity.Query;
 
-//namespace ED.Repositories.Core.Query
-//{
-//    public interface IUserQueryRepository : IDapperQueryRepository<User>
-//    {
-//        List<User> GetAll();
-//        IQueryable<User> GetAllQueryable();
-
-//        User GetById();
-//    }
-//}
+namespace SV.Repository.Core.Query
+{
+    public interface IUserQueryRepository : IDapperQueryRepository<User>
+    {
+        List<User> GetAll();
+        User GetById();
+    }
+}

@@ -5,8 +5,10 @@ using SV.Entity.Auditing;
 
 namespace SV.Entity.Command
 {
-    public class User : BaseEntityC, IHasCreationTime
+    public class User : BaseEntity, IHasCreationTime
     {
+        [MaxLength(100)]
+        public string Name { get; set; }
         [MaxLength(100)]
         public string Email { get; set; }
         [MaxLength(100)]
