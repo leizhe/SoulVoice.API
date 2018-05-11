@@ -18,15 +18,15 @@ namespace SV.Repository.Base
             _option = option;
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseMySQL(_option.CommandString);
-        //    base.OnConfiguring(optionsBuilder);
-        //}
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-          => optionsBuilder
-              .UseMySQL(_option.CommandString);
+        {
+            optionsBuilder.UseMySQL(_option.CommandString);
+            base.OnConfiguring(optionsBuilder);
+        }
+
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //  => optionsBuilder
+        //      .UseMySQL(_option.CommandString);
 
 
         public DbSet<User> Users { get; set; }

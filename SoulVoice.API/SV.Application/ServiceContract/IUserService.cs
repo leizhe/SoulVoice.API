@@ -6,9 +6,13 @@ namespace SV.Application.ServiceContract
 {
     public interface IUserService
     {
+        CreateResult<long> Register(RegisterInput user);
+
+
         GetResults<UserDto> GetUsers(PageInput input);
 
         //UpdateResult UpdateUser(UserDto user);
+
 
         //CreateResult<long> AddUser(UserDto user);
 
@@ -16,7 +20,7 @@ namespace SV.Application.ServiceContract
 
         //UpdateResult UpdatePwd(UserDto user);
 
-        //GetResult<UserDto> GetUser(int userId);
+        GetResult<UserDto> GetUser(int userId);
 
         ////UpdateResult UpdateRoles(UserDto user);
 

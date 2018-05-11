@@ -6,6 +6,7 @@ using SV.Application.Dtos;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
+using SV.Entity.Command;
 using SV.Repository.Core.Command;
 using SV.Repository.Core.Query;
 
@@ -27,7 +28,7 @@ namespace SV.Application.ServiceImp
         {
             var result = GetDefault<GetResults<UserDto>>();
             var filterExp = BuildExpression(input);
-            var query = _userQuery.Page(input.Current, input.Size, out var pageCount,filterExp, SortOrder.Descending);
+            var query = _userQuery.Page(input.Current, input.Size, out var pageCount, filterExp);
             result.Total = pageCount;
             result.Data = query.Select(user => new UserDto()
             {
@@ -75,31 +76,30 @@ namespace SV.Application.ServiceImp
         //    return result;
         //}
 
-        //public CreateResult<long> AddUser(UserDto userDto)
-        //{
-        //    var result = GetDefault<CreateResult<long>>();
-        //    if (IsHasSameName(userDto.Name, userDto.Id))
-        //    {
-        //        result.Message = "USER_NAME_HAS_EXIST";
-        //        result.StateCode = 0x00302;
-        //        return result;
-        //    }
-        //    var user = new User()
-        //    {
-        //        CreationTime = DateTime.Now,
-        //        Password = "",
-        //        Email = userDto.Email,
-        //        State = userDto.State,
-        //        RealName = userDto.RealName,
-        //        Name = userDto.Name
-        //    };
+        public CreateResult<long> AddUser(UserDto userDto)
+        {
+            var result = GetDefault<CreateResult<long>>();
+            if (IsHasSameName(userDto.Name, userDto.Id))
+            {
+                result.Message = "USER_NAME_HAS_EXIST";
+                result.StateCode = 0x00302;
+                return result;
+            }
+            var user = new User()
+            {
+                CreationTime = DateTime.Now,
+                Password = "",
+                Email = userDto.Email,
+                State = userDto.State,
+                Name = userDto.Name
+            };
 
-        //    _userCommand.Add(user);
-        //    _userCommand.Commit();
-        //    result.Id = user.Id;
-        //    result.IsCreated = true;
-        //    return result;
-        //}
+            _userCommand.Add(user);
+            _userCommand.Commit();
+            result.Id = user.Id;
+            result.IsCreated = true;
+            return result;
+        }
 
         //public DeleteResult DeleteUser(int userId)
         //{
@@ -133,28 +133,27 @@ namespace SV.Application.ServiceImp
         //    return result;
         //}
 
-        //public GetResult<UserDto> GetUser(int userId)
-        //{
-        //    var result = GetDefault<GetResult<UserDto>>();
-        //    var model = _userQuery.FindSingle(x => x.Id == userId);
-        //    if (model == null)
-        //    {
-        //        result.Message = "USE_NOT_EXIST";
-        //        result.StateCode = 0x00402;
-        //        return result;
-        //    }
-        //    result.Data = new UserDto()
-        //    {
-        //        CreateTime = model.CreationTime,
-        //        Email = model.Email,
-        //        Id = model.Id,
-        //        RealName = model.RealName,
-        //        State = model.State,
-        //        Name = model.Name,
-        //        Password = "*******"
-        //    };
-        //    return result;
-        //}
+        public GetResult<UserDto> GetUser(int userId)
+        {
+            var result = GetDefault<GetResult<UserDto>>();
+            var model = _userQuery.FindSingle(userId);
+            if (model == null)
+            {
+                result.Message = "USE_NOT_EXIST";
+                result.StateCode = 0x00402;
+                return result;
+            }
+            result.Data = new UserDto()
+            {
+                CreationTime = model.CreationTime,
+                Email = model.Email,
+                Id = model.Id,
+                State = model.State,
+                Name = model.Name,
+                Password = "*******"
+            };
+            return result;
+        }
 
         ////public UpdateResult UpdateRoles(UserDto user)
         ////{
@@ -208,15 +207,15 @@ namespace SV.Application.ServiceImp
         ////    return result;
         ////}
 
-        //public bool Exist(string username, string password)
-        //{
-        //    return _userQuery.FindSingle(u => u.Name == username && u.Password == password) != null;
-        //}
+        public bool Exist(string username, string password)
+        {
+            return _userQuery.FindSingle(u => u.Name == username && u.Password == password) != null;
+        }
 
-        //private bool IsHasSameName(string name, long userId)
-        //{
-        //    return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
-        //}
+        private bool IsHasSameName(string name, long userId)
+        {
+            return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
+        }
 
         private Expression<Func<SV.Entity.Query.User, bool>> BuildExpression(PageInput pageInput)
         {
@@ -238,6 +237,32 @@ namespace SV.Application.ServiceImp
             }
 
             return filterExp;
+        }
+
+        public CreateResult<long> Register(RegisterInput input)
+        {
+            var result = GetDefault<CreateResult<long>>();
+            //if (IsHasSameName(user.Name, user.Id))
+            //{
+            //    result.Message = "USER_NAME_HAS_EXIST";
+            //    result.StateCode = 0x00302;
+            //    return result;
+            //}
+            var user = new User()
+            {
+                CreationTime = DateTime.UtcNow,
+                Password = input.Password,
+                Email = input.Email,
+                Name = input.Name,
+                Phone = input.Phone,
+                //State = input.State,
+            };
+
+            _userCommand.Add(user);
+            _userCommand.Commit();
+            result.Id = user.Id;
+            result.IsCreated = true;
+            return result;
         }
     }
 }

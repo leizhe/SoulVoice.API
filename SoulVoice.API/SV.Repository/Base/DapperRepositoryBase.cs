@@ -1,17 +1,17 @@
-﻿using System;
+﻿using SV.Entity.Auditing;
+using SV.Repository.Core;
+using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using DapperExtensions;
-using SV.Entity.Auditing;
-using SV.Repository.Core;
+using System.Data;
 
 namespace SV.Repository.Base
 {
-    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>,IDisposable
+    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>//,IDisposable
         where TEntity : class, IEntity
     {
 
@@ -21,7 +21,7 @@ namespace SV.Repository.Base
         {
             Context = context;
         }
-        
+
         #region 数据查询
         public TEntity FindSingle(object id)
         {
@@ -29,7 +29,7 @@ namespace SV.Repository.Base
             {
                 return db.Get<TEntity>(id);
             }
-        
+
         }
 
         public TEntity FindSingle(Expression<Func<TEntity, bool>> expression = null, object sortList = null)
@@ -42,7 +42,7 @@ namespace SV.Repository.Base
                 return data.FirstOrDefault();
             }
         }
-      
+
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression, object sortList = null)
         {
             using (var db = Context.GetConnection())
@@ -97,8 +97,8 @@ namespace SV.Repository.Base
         /// <summary>
         /// 转换成Dapper排序方式
         /// </summary>
-        /// <param name="sortList"></param>
-        /// <returns></returns>
+        /// <param name = "sortList" ></param >
+        /// < returns ></ returns >
         private static IList<ISort> SortConvert(object sortList)
         {
             IList<ISort> sorts = new List<ISort>();
@@ -122,11 +122,11 @@ namespace SV.Repository.Base
             return sorts;
         }
 
-        public void Dispose()
-        {
-            Context.Dispose();
-            this.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    Context.Dispose();
+        //    this.Dispose();
+        //}
         #endregion
 
     }

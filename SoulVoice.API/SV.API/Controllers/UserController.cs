@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SV.Application.Dtos;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
@@ -18,7 +19,7 @@ namespace SV.API.Controllers
         [Route("api/user/GetAllUsers")]
         public OutputBase GetAllUsers()
         {
-            PageInput input = new PageInput() {Current = 1, Size=10 };
+            PageInput input = new PageInput() { Current = 1, Size = 10 };
             return _userService.GetUsers(input);
         }
 
@@ -28,12 +29,12 @@ namespace SV.API.Controllers
         {
             return _userService.GetUsers(input);
         }
-        
+
         [HttpGet]
         [Route("api/user/Get/{id}")]
-        public string Get(int id)
+        public GetResult<UserDto> Get(int id)
         {
-            return "value";
+            return _userService.GetUser(id);
         }
 
         [HttpPut]
@@ -41,7 +42,7 @@ namespace SV.API.Controllers
         public void Put(int id, [FromBody]string value)
         {
         }
-        
+
         [HttpDelete]
         [Route("api/user/Delete/{id}")]
         public void Delete(int id)

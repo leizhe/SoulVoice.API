@@ -29,17 +29,17 @@ namespace SV.Entity.Query
 
 
         public Role Role { get; set; }
-        
-    }
-    [Serializable]
-    public sealed class UserOrmMapper : ClassMapper<User>
-    {
-        public UserOrmMapper()
+        [Serializable]
+        public sealed class UserOrmMapper : ClassMapper<User>
         {
-            base.Table("User");
-            Map(f => f.Role).Ignore();//设置忽略
-            //Map(f => f.Name).Key(KeyType.Identity);//设置主键  (如果主键名称不包含字母“ID”，请设置)      
-            AutoMap();
+            public UserOrmMapper()
+            {
+                base.Table("User");
+                Map(f => f.Role).Ignore();//设置忽略
+                //Map(f => f.Id).Key(KeyType.Identity);//设置主键  (如果主键名称不包含字母“ID”，请设置)      
+                AutoMap();
+            }
         }
     }
+    
 }

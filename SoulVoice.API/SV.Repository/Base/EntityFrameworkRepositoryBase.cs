@@ -8,7 +8,7 @@ using Z.EntityFramework.Plus;
 
 namespace SV.Repository.Base
 {
-    public class EntityFrameworkRepositoryBase<TEntity> : IEntityFrameworkCommandRepository<TEntity>, IDisposable
+    public class EntityFrameworkRepositoryBase<TEntity> : IEntityFrameworkCommandRepository<TEntity>//, IDisposable
          where TEntity : class
     {
         private readonly EntityFrameworkContext _context;
@@ -71,11 +71,11 @@ namespace SV.Repository.Base
             _context.SaveChanges();
         }
 
-        public void Dispose()
-        {
-            _context.Dispose();
-            this.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    _context.Dispose();
+        //    this.Dispose();
+        //}
 
 
     }

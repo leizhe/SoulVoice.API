@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data;
+using DapperExtensions;
+using DapperExtensions.Sql;
 using MySql.Data.MySqlClient;
 using SV.Common.Options;
 
 namespace SV.Repository.Base
 {
-    public class DapperContext :IDisposable
+    public class DapperContext// :IDisposable
     {
         private readonly DbContextOption _option;
 
@@ -16,6 +18,7 @@ namespace SV.Repository.Base
             if (string.IsNullOrEmpty(option.QueryString))
                 throw new ArgumentNullException(nameof(option.QueryString));
             _option = option;
+            DapperExtensions.DapperExtensions.SqlDialect = new MySqlDialect();
         }
 
        
@@ -77,10 +80,10 @@ namespace SV.Repository.Base
             return new Tuple<bool, string>(isopen, msg);
         }
 
-        public void Dispose()
-        {
-            this.Dispose();
-        }
+        //public void Dispose()
+        //{
+        //    this.Dispose();
+        //}
 
 
     }
