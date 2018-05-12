@@ -28,7 +28,7 @@ namespace SV.Application.ServiceImp
         {
             var result = GetDefault<GetResults<UserDto>>();
             var filterExp = BuildExpression(input);
-            var query = _userQuery.Page(input.Current, input.Size, out var pageCount, filterExp);
+            var query = _userQuery.Page(input.Current, input.Size, out var pageCount, null, new { Name = true });
             result.Total = pageCount;
             result.Data = query.Select(user => new UserDto()
             {
@@ -217,9 +217,9 @@ namespace SV.Application.ServiceImp
             return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
         }
 
-        private Expression<Func<SV.Entity.Query.User, bool>> BuildExpression(PageInput pageInput)
+        private Expression<Func<Entity.Query.User, bool>> BuildExpression(PageInput pageInput)
         {
-            Expression<Func<SV.Entity.Query.User, bool>> filterExp = user => true;
+            Expression<Func<Entity.Query.User, bool>> filterExp = user => true;
             if (string.IsNullOrWhiteSpace(pageInput.Name))
                 return filterExp;
 

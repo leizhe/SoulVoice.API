@@ -21,7 +21,9 @@ namespace SV.Repository.Base
             DapperExtensions.DapperExtensions.SqlDialect = new MySqlDialect();
         }
 
-       
+ 
+
+
         public IDbConnection GetConnection()
         {
             var conn = new MySqlConnection(_option.QueryString);

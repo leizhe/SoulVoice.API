@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace SV.Repository.Core
 
@@ -13,6 +14,7 @@ namespace SV.Repository.Core
         /// <param name="id"></param>
         /// <returns></returns>
         TEntity FindSingle(object id);
+
         /// <summary>
         /// 获取结果集第一条数据
         /// </summary>
@@ -20,6 +22,14 @@ namespace SV.Repository.Core
         /// <param name="sortList"></param>
         /// <returns></returns>
         TEntity FindSingle(Expression<Func<TEntity, bool>> expression = null, object sortList = null);
+
+        /// <summary>
+        /// 获取表所有数据
+        /// </summary>
+        /// <param name="sortList">排序</param>
+        /// <returns></returns>
+        IEnumerable<TEntity> FindAll(object sortList = null);
+
         /// <summary>
         /// 根据条件获取表数据
         /// </summary>
@@ -27,6 +37,7 @@ namespace SV.Repository.Core
         /// <param name="sortList">排序</param>
         /// <returns></returns>
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression, object sortList = null);
+
         /// <summary>
         /// 数据表 分页
         /// </summary>
@@ -38,18 +49,32 @@ namespace SV.Repository.Core
         /// <returns></returns>
         IEnumerable<TEntity> Page(int pageNum, int pageSize, out long outTotal,
             Expression<Func<TEntity, bool>> expression = null, object sortList = null);
+
         /// <summary>
         /// 获取数据表总项数
         /// </summary>
         /// <param name="expression">linq表达式 谓词</param>
         /// <returns></returns>
         long Count(Expression<Func<TEntity, bool>> expression = null);
+
         /// <summary>
         /// 查看指定的数据是否存在
         /// </summary>
         /// <param name="expression">linq表达式 谓词</param>
         /// <returns></returns>
         bool Exists(Expression<Func<TEntity, bool>> expression);
+
+
+        Task<TEntity> FindSingleAsync(object id);
+
+        Task<IEnumerable<TEntity>> FindAllAsync(object sortList = null);
+
+        Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, object sortList = null);
+
+        Task<IEnumerable<TEntity>> PageAsync(int pageNum, int pageSize, out Task<int> outTotal,
+            Expression<Func<TEntity, bool>> expression = null, object sortList = null);
+
+        Task<int> CountAsync(Expression<Func<TEntity, bool>> expression = null);
 
 
     }

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using DapperExtensions;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace SV.Repository.Base
 {
@@ -43,15 +44,20 @@ namespace SV.Repository.Base
             }
         }
 
+        public IEnumerable<TEntity> FindAll(object sortList = null)
+        {
+            return Find(null,sortList);
+        }
+
+
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression, object sortList = null)
         {
             using (var db = Context.GetConnection())
             {
-                IList<ISort> sort = SortConvert(sortList);//转换排序接口
+                IList<ISort> sort = SortConvert(sortList);
                 if (expression == null)
                 {
-                    //允许脏读
-                    return db.GetList<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));//如果条件为Null 就查询所有数据
+                    return db.GetList<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
                 }
                 else
                 {
@@ -67,10 +73,10 @@ namespace SV.Repository.Base
         {
             using (var db = Context.GetConnection())
             {
-                IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression); //转换Linq表达式
-                IList<ISort> sort = SortConvert(sortList);//转换排序接口
-                var entities = db.GetPage<TEntity>(predicate, sort, pageNum, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
-                outTotal = db.Count<TEntity>(null);
+                IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                IList<ISort> sort = SortConvert(sortList);
+                var entities = db.GetPage<TEntity>(predicate, sort, pageNum-1, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                outTotal = db.Count<TEntity>(predicate);
                 return entities;
             }
 
@@ -93,12 +99,71 @@ namespace SV.Repository.Base
 
         #endregion
 
+        #region 数据查询异步
+        public Task<TEntity> FindSingleAsync(object id)
+        {
+            using (var db = Context.GetConnection())
+            {
+                return db.GetAsync<TEntity>(id);
+            }
+
+        }
+        
+        public Task<IEnumerable<TEntity>> FindAllAsync(object sortList = null)
+        {
+            return FindAsync(null, sortList);
+        }
+        
+        public Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, object sortList = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                IList<ISort> sort = SortConvert(sortList);
+                if (expression == null)
+                {
+                    return db.GetListAsync<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                }
+                else
+                {
+                    var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                    return db.GetListAsync<TEntity>(predicate, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                }
+            }
+
+        }
+
+        public Task<IEnumerable<TEntity>> PageAsync(int pageNum, int pageSize, out Task<int> outTotal,
+            Expression<Func<TEntity, bool>> expression = null, object sortList = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                IList<ISort> sort = SortConvert(sortList);
+                var entities = db.GetPageAsync<TEntity>(predicate, sort, pageNum - 1, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                outTotal = db.CountAsync<TEntity>(predicate);
+                return entities;
+            }
+
+        }
+
+        public Task<int> CountAsync(Expression<Func<TEntity, bool>> expression = null)
+        {
+            using (var db = Context.GetConnection())
+            {
+                var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
+                return db.CountAsync<TEntity>(predicate);
+            }
+        }
+        
+        #endregion
+        
+
         #region 辅助方法
         /// <summary>
         /// 转换成Dapper排序方式
         /// </summary>
         /// <param name = "sortList" ></param >
-        /// < returns ></ returns >
+        /// < returns ></returns >
         private static IList<ISort> SortConvert(object sortList)
         {
             IList<ISort> sorts = new List<ISort>();

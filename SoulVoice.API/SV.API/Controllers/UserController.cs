@@ -17,7 +17,7 @@ namespace SV.API.Controllers
 
         [HttpGet]
         [Route("api/user/GetAllUsers")]
-        public OutputBase GetAllUsers()
+        public GetResults<UserDto> GetAllUsers()
         {
             PageInput input = new PageInput() { Current = 1, Size = 10 };
             return _userService.GetUsers(input);
@@ -25,7 +25,7 @@ namespace SV.API.Controllers
 
         [HttpGet]
         [Route("api/user/GetUsers")]
-        public OutputBase GetUsers(PageInput input)
+        public GetResults<UserDto> GetUsers(PageInput input)
         {
             return _userService.GetUsers(input);
         }
