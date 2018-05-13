@@ -5,7 +5,7 @@ using SV.Entity.Auditing;
 
 namespace SV.Entity.Command
 {
-    public class User : BaseEntity, IHasCreationTime
+    public sealed class User : BaseEntity, IHasCreationTime
     {
         [MaxLength(100)]
         public string Name { get; set; }
@@ -31,9 +31,14 @@ namespace SV.Entity.Command
 
         public int State { get; set; }
 
-        public Role Role { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
 
-       
+        public User()
+        {
+            UserRoles = new List<UserRole>();
+        }
+
+
 
 
     }

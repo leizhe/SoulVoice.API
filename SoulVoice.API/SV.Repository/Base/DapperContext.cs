@@ -1,32 +1,27 @@
 ﻿using System;
 using System.Data;
-using DapperExtensions;
 using DapperExtensions.Sql;
 using MySql.Data.MySqlClient;
 using SV.Common.Options;
 
 namespace SV.Repository.Base
 {
-    public class DapperContext// :IDisposable
+    public class DapperContext :IDisposable
     {
-        private readonly DbContextOption _option;
-
-        public DapperContext(DbContextOption option)
+        internal IDbConnection Conn { get; set; }
+        
+        public DapperContext()
         {
-            if (option == null)
-                throw new ArgumentNullException(nameof(option));
-            if (string.IsNullOrEmpty(option.QueryString))
-                throw new ArgumentNullException(nameof(option.QueryString));
-            _option = option;
+            if (string.IsNullOrEmpty(DbContextOption.QueryString))
+                throw new ArgumentNullException(nameof(DbContextOption.QueryString));
             DapperExtensions.DapperExtensions.SqlDialect = new MySqlDialect();
+            this.Conn = new MySqlConnection(DbContextOption.QueryString);
         }
-
- 
-
+        
 
         public IDbConnection GetConnection()
         {
-            var conn = new MySqlConnection(_option.QueryString);
+            var conn = new MySqlConnection(DbContextOption.QueryString);
             conn.Open();
             return conn;
         }
@@ -34,7 +29,7 @@ namespace SV.Repository.Base
 
         public IDbConnection GetConnection(string strConn)
         {
-            var conn = new MySqlConnection(strConn);
+            var conn = new MySqlConnection(DbContextOption.QueryString);
             conn.Open();
             return conn;
         }
@@ -68,7 +63,7 @@ namespace SV.Repository.Base
 
             try
             {
-                var conn = GetConnection(_option.QueryString);
+                var conn = GetConnection(DbContextOption.QueryString);
                 if (conn.State == ConnectionState.Open)
                 {
                     isopen = true;
@@ -82,10 +77,10 @@ namespace SV.Repository.Base
             return new Tuple<bool, string>(isopen, msg);
         }
 
-        //public void Dispose()
-        //{
-        //    this.Dispose();
-        //}
+        void IDisposable.Dispose()
+        {
+            Conn.Dispose();
+        }
 
 
     }

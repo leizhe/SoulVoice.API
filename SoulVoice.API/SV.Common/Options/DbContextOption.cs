@@ -3,8 +3,8 @@
     public class DbContextOption
     {
       
-        public string CommandString { get; set; }
-        public string QueryString { get; set; }
+        public static string CommandString { get; set; }
+        public static string QueryString { get; set; }
     }
 
   

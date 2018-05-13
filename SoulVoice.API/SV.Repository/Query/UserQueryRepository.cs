@@ -9,21 +9,7 @@ namespace SV.Repository.Query
 {
     public class UserQueryRepository : DapperRepositoryBase<User>, IUserQueryRepository
     {
-
-        public UserQueryRepository(DapperContext context) : base(context)
-        {
-        }
-
-        public List<User> GetAll()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IQueryable<User> GetAllQueryable()
-        {
-            throw new System.NotImplementedException();
-        }
-
+        
         //public List<User> GetAll()
         //{
         //    using (var db = Context.GetConnection())
@@ -89,9 +75,6 @@ namespace SV.Repository.Query
 
         //}
 
-        public User GetById()
-        {
-            throw new System.NotImplementedException();
-        }
+      
     }
 }

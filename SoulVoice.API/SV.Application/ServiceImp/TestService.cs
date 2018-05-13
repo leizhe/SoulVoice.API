@@ -44,13 +44,13 @@ namespace SV.Application.ServiceImp
             var page = _userQuery.Page(1, 10, out var pageCount);
             var pagecount = pageCount;
 
-            var pageByExpOrder = _userQuery.Page(1, 10, out var pageByExpOrderCount, user=>user.Id==1, new { Name = true });
+            var pageByExpOrder = _userQuery.Page(1, 10, out var pageByExpOrderCount, user => user.Id == 1, new { Name = true });
             var pageByExpOrdercount = pageByExpOrderCount;
 
 
             //Count
             var count = _userQuery.Count();
-            var countByExp = _userQuery.Count(p=>p.Id>0);
+            var countByExp = _userQuery.Count(p => p.Id > 0);
 
             //Exists
             var exists = _userQuery.Exists(p => p.Id == 1);
@@ -58,39 +58,55 @@ namespace SV.Application.ServiceImp
 
         public void CommandTest()
         {
-            ////Add
-            ////----------------------------------------------
-            //var user = new User() { Name = "test1", Password = "testPass", CreationTime = DateTime.UtcNow };
-            //_userCommand.Add(user);
-            //_userCommand.Commit();
-            ////----------------------------------------------
+            //Add
+            //----------------------------------------------
+            var user = new User() { Name = "test1", Password = "testPass", CreationTime = DateTime.UtcNow };
+            _userCommand.Add(user);
+            _userCommand.Commit();
+            //----------------------------------------------
 
-            ////----------------------------------------------
-            //var userLst = new List<User>()
-            //{
-            //    new User() {Name = "testlst1", Password = "testlstPass", CreationTime = DateTime.UtcNow}
-            //};
-            //_userCommand.AddRange(userLst);
-            //_userCommand.Commit();
-            ////----------------------------------------------
+            //----------------------------------------------
+            var userLst = new List<User>()
+            {
+                new User() {Name = "testlst1", Password = "testlstPass", CreationTime = DateTime.UtcNow}
+            };
+            _userCommand.AddRange(userLst);
+            _userCommand.Commit();
+            //----------------------------------------------
 
             //Update
             //----------------------------------------------
             var userUp1 = _userQuery.FindSingle(4);
             userUp1.Alipay = "123";
             userUp1.Name = "1234";
-            var commandUser = _mapper.Map<User>(userUp1);
-            _userCommand.Update(commandUser);
+            var commandUpUser = _mapper.Map<User>(userUp1);
+            _userCommand.Update(commandUpUser);
             _userCommand.Commit();
             //----------------------------------------------
 
             //----------------------------------------------
-            _userCommand.Update(f=>f.Id==4,p=> new Entity.Command.User() { Name = "testUp1", Password = "testPassUp", CreationTime = DateTime.UtcNow });
+            _userCommand.Update(f => f.Id == 4, p => new User() { Name = "testUp1aaa", Password = "testPassUp", CreationTime = DateTime.UtcNow });
             //----------------------------------------------
 
-
-
+            //Delete
+            //----------------------------------------------
+            var deleteUser1 = _userQuery.FindSingle(4);
+            var commandDlUser = _mapper.Map<User>(deleteUser1);
+            _userCommand.Delete(commandDlUser);
             _userCommand.Commit();
+            //----------------------------------------------
+
+            //----------------------------------------------
+            var deleteUserlst = _userQuery.Find(p=>p.Id>5);
+            var commandDlUserLst = _mapper.Map<List<User>>(deleteUserlst);
+            _userCommand.Delete(commandDlUserLst);
+            _userCommand.Commit();
+            //----------------------------------------------
+
+            //----------------------------------------------
+            _userCommand.Delete(f => f.Id == 3);
+            //----------------------------------------------
+            
             
         }
     }

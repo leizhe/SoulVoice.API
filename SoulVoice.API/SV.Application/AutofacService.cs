@@ -12,17 +12,8 @@ namespace SV.Application
 {
     public class AutofacService
     {
-        public static IServiceProvider InitIoC(IServiceCollection services, string commandString, string queryString)
+        public static IServiceProvider InitIoC(IServiceCollection services)
         {
-         
-            var dbContextOption = new DbContextOption
-            {
-                CommandString = commandString,
-                QueryString = queryString
-            };
-            IoCContainer.Register(dbContextOption);
-            IoCContainer.Register(typeof(DapperContext));
-            IoCContainer.Register(typeof(EntityFrameworkContext));
             IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");
             IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");
             IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));

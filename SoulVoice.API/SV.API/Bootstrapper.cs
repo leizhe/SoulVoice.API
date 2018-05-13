@@ -25,7 +25,7 @@ namespace SV.API
     //            .Build();
     //        var builder = new DbContextOptionsBuilder<EntityFrameworkContext>();
     //        var commandString = configuration.GetConnectionString("CommandDB");
-    //        builder.UseMySQL(commandString);
+    //        builder.UseMySql(commandString);
     //        return new EntityFrameworkContext(builder.Options);
     //    }
     //}

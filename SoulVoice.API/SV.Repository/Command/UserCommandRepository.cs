@@ -6,8 +6,8 @@ namespace SV.Repository.Command
 {
     public class UserCommandRepository : EntityFrameworkRepositoryBase<User>, IUserCommandRepository
     {
-        public UserCommandRepository(EntityFrameworkContext context) : base(context)
-        {
-        }
+        //public UserCommandRepository(EntityFrameworkContext context) : base(context)
+        //{
+        //}
     }
 }

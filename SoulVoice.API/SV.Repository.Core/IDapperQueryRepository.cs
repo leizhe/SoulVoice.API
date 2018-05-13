@@ -64,7 +64,6 @@ namespace SV.Repository.Core
         /// <returns></returns>
         bool Exists(Expression<Func<TEntity, bool>> expression);
 
-
         Task<TEntity> FindSingleAsync(object id);
 
         Task<IEnumerable<TEntity>> FindAllAsync(object sortList = null);

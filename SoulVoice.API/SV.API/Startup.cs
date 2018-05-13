@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using SV.Application;
 using SV.Common.Filters;
 using SV.Common.Helpers;
+using SV.Common.Options;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace SV.API
@@ -29,6 +30,9 @@ namespace SV.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public IServiceProvider ConfigureServices(IServiceCollection services)
         {
+            DbContextOption.CommandString = Configuration.GetConnectionString("CommandDB");
+            DbContextOption.QueryString = Configuration.GetConnectionString("QueryDB");
+
             services.AddMvc(option =>
             {
                 option.Filters.Add(new GlobalExceptionFilter());
@@ -45,11 +49,8 @@ namespace SV.API
             });
 
             services.AddAutoMapper();
-
-            var commandString = Configuration.GetConnectionString("CommandDB");
-            var queryString = Configuration.GetConnectionString("QueryDB");
-
-            return AutofacService.InitIoC(services, commandString,queryString);
+          
+            return AutofacService.InitIoC(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

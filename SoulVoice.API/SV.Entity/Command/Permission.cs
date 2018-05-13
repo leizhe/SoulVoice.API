@@ -2,17 +2,17 @@
 
 namespace SV.Entity.Command
 {
-    public sealed class Role : BaseEntity
+    public sealed class Permission : BaseEntity
     {
         public string Name { get; set; }
-        public string Memo { get; set; }
-        public ICollection<RolePermission> RolePermissions { get; set; }
-        public ICollection<UserRole> UserRoles { get; set; }
 
-        public Role()
+        public string Url { get; set; }
+
+        public ICollection<RolePermission> RolePermissions { get; set; }
+
+        public Permission()
         {
             RolePermissions = new HashSet<RolePermission>();
-            UserRoles = new HashSet<UserRole>();
         }
     }
 }

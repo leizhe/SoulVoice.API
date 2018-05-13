@@ -9,8 +9,8 @@ namespace SV.Repository.Core
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
         void Update(TEntity entity);
-        void Update(Expression<Func<TEntity, TEntity>> updateExpression);
-        void Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression);
+        int Update(Expression<Func<TEntity, TEntity>> updateExpression);
+        int Update(Expression<Func<TEntity, bool>> filterExpression, Expression<Func<TEntity, TEntity>> updateExpression);
         void Delete(TEntity entity);
         void Delete(ICollection<TEntity> entityCollection);
         int Delete(Expression<Func<TEntity, bool>> filterExpression);

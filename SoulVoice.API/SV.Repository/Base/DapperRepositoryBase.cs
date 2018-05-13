@@ -8,39 +8,48 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using DapperExtensions;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SV.Repository.Base
 {
-    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>//,IDisposable
+    public class DapperRepositoryBase<TEntity> : IDapperQueryRepository<TEntity>,IDisposable
         where TEntity : class, IEntity
     {
 
-        protected readonly DapperContext Context;
+        private readonly ThreadLocal<DapperContext> _localCtx = new ThreadLocal<DapperContext>(() => new DapperContext());
 
-        public DapperRepositoryBase(DapperContext context)
-        {
-            Context = context;
-        }
+        public IDbConnection Conn => _localCtx.Value.Conn;
 
         #region 数据查询
         public TEntity FindSingle(object id)
         {
-            using (var db = Context.GetConnection())
+            try
             {
-                return db.Get<TEntity>(id);
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
+                return Conn.Get<TEntity>(id);
             }
-
+            finally
+            {
+                Conn.Close();
+            }
         }
 
         public TEntity FindSingle(Expression<Func<TEntity, bool>> expression = null, object sortList = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
                 var sort = SortConvert(sortList);
-                var data = db.GetSet<TEntity>(predicate, sort, 0, 1);
+                var data = Conn.GetSet<TEntity>(predicate, sort, 0, 1);
                 return data.FirstOrDefault();
+            }
+            finally
+            {
+                Conn.Close();
             }
         }
 
@@ -52,43 +61,61 @@ namespace SV.Repository.Base
 
         public IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> expression, object sortList = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 IList<ISort> sort = SortConvert(sortList);
                 if (expression == null)
                 {
-                    return db.GetList<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                    return Conn.GetList<TEntity>(null, sort);
                 }
                 else
                 {
                     var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
-                    return db.GetList<TEntity>(predicate, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                    return Conn.GetList<TEntity>(predicate, sort);
                 }
             }
-
+            finally
+            {
+                Conn.Close();
+            }
         }
 
         public IEnumerable<TEntity> Page(int pageNum, int pageSize, out long outTotal,
             Expression<Func<TEntity, bool>> expression = null, object sortList = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
                 IList<ISort> sort = SortConvert(sortList);
-                var entities = db.GetPage<TEntity>(predicate, sort, pageNum-1, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
-                outTotal = db.Count<TEntity>(predicate);
+                var entities = Conn.GetPage<TEntity>(predicate, sort, pageNum - 1, pageSize);
+                outTotal = Conn.Count<TEntity>(predicate);
                 return entities;
             }
-
+            finally
+            {
+                Conn.Close();
+            }
+            
         }
 
         public long Count(Expression<Func<TEntity, bool>> expression = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
-                return db.Count<TEntity>(predicate);
+                return Conn.Count<TEntity>(predicate);
             }
+            finally
+            {
+                Conn.Close();
+            }
+         
         }
 
         public bool Exists(Expression<Func<TEntity, bool>> expression)
@@ -102,61 +129,84 @@ namespace SV.Repository.Base
         #region 数据查询异步
         public Task<TEntity> FindSingleAsync(object id)
         {
-            using (var db = Context.GetConnection())
+            try
             {
-                return db.GetAsync<TEntity>(id);
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
+                return Conn.GetAsync<TEntity>(id);
             }
-
+            finally
+            {
+                Conn.Close();
+            }
         }
-        
+
         public Task<IEnumerable<TEntity>> FindAllAsync(object sortList = null)
         {
             return FindAsync(null, sortList);
         }
-        
+
         public Task<IEnumerable<TEntity>> FindAsync(Expression<Func<TEntity, bool>> expression, object sortList = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 IList<ISort> sort = SortConvert(sortList);
                 if (expression == null)
                 {
-                    return db.GetListAsync<TEntity>(null, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                    return Conn.GetListAsync<TEntity>(null, sort);
                 }
                 else
                 {
                     var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
-                    return db.GetListAsync<TEntity>(predicate, sort, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
+                    return Conn.GetListAsync<TEntity>(predicate, sort);
                 }
             }
-
+            finally
+            {
+                Conn.Close();
+            }
+           
         }
 
         public Task<IEnumerable<TEntity>> PageAsync(int pageNum, int pageSize, out Task<int> outTotal,
             Expression<Func<TEntity, bool>> expression = null, object sortList = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 IPredicateGroup predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
                 IList<ISort> sort = SortConvert(sortList);
-                var entities = db.GetPageAsync<TEntity>(predicate, sort, pageNum - 1, pageSize, transaction: db.BeginTransaction(IsolationLevel.ReadUncommitted));
-                outTotal = db.CountAsync<TEntity>(predicate);
+                var entities = Conn.GetPageAsync<TEntity>(predicate, sort, pageNum - 1, pageSize);
+                outTotal = Conn.CountAsync<TEntity>(predicate);
                 return entities;
             }
-
+            finally
+            {
+                Conn.Close();
+            }
+            
         }
 
         public Task<int> CountAsync(Expression<Func<TEntity, bool>> expression = null)
         {
-            using (var db = Context.GetConnection())
+            try
             {
+                if (Conn.State == ConnectionState.Closed)
+                    Conn.Open();
                 var predicate = DapperLinqBuilder<TEntity>.FromExpression(expression);
-                return db.CountAsync<TEntity>(predicate);
+                return Conn.CountAsync<TEntity>(predicate);
+            }
+            finally
+            {
+                Conn.Close();
             }
         }
-        
+
         #endregion
-        
+
 
         #region 辅助方法
         /// <summary>
@@ -187,11 +237,11 @@ namespace SV.Repository.Base
             return sorts;
         }
 
-        //public void Dispose()
-        //{
-        //    Context.Dispose();
-        //    this.Dispose();
-        //}
+        public void Dispose()
+        {
+            Conn.Dispose();
+            _localCtx.Dispose();
+        }
         #endregion
 
     }
