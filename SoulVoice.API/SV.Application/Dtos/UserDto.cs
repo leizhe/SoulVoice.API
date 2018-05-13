@@ -25,7 +25,8 @@ namespace SV.Application.Dtos
         public DateTime CreationTime { get; set; }
 
         public int State { get; set; }
-
-        public RoleDto Role { get; set; }
+        
+        public List<RoleDto> Roles { get; set; }
+        public int TotalRole { get; set; }
     }
 }

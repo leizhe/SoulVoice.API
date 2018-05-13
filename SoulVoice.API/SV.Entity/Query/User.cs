@@ -6,6 +6,7 @@ using SV.Entity.Command;
 
 namespace SV.Entity.Query
 {
+    [Serializable]
     public class User : BaseEntity, IHasCreationTime, IEntity
     {
         public string Name { get; set; }

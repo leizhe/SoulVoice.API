@@ -20,7 +20,7 @@ namespace SV.Application.ServiceContract
 
         //UpdateResult UpdatePwd(UserDto user);
 
-        GetResult<UserDto> GetUser(int userId);
+        GetResult<UserDto> GetUser(long userId);
 
         ////UpdateResult UpdateRoles(UserDto user);
 

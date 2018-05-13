@@ -5,6 +5,7 @@ using SV.Entity.Command;
 
 namespace SV.Entity.Query
 {
+    [Serializable]
     public class Role : BaseEntity
     {
         public string Name { get; set; }

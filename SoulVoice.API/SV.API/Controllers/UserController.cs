@@ -6,6 +6,7 @@ using SV.Application.ServiceContract;
 
 namespace SV.API.Controllers
 {
+    [Produces("application/json")]
     public class UserController : Controller
     {
         private readonly IUserService _userService;

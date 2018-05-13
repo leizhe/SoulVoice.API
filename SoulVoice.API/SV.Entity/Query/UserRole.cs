@@ -3,6 +3,7 @@ using DapperExtensions.Mapper;
 
 namespace SV.Entity.Query
 {
+    [Serializable]
     public sealed  class UserRole : BaseEntity
     {
         public long RoleId { get; set; }

@@ -10,6 +10,9 @@ using DapperExtensions;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using Dapper;
+
+    
 
 namespace SV.Repository.Base
 {
@@ -214,7 +217,7 @@ namespace SV.Repository.Base
         /// </summary>
         /// <param name = "sortList" ></param >
         /// < returns ></returns >
-        private static IList<ISort> SortConvert(object sortList)
+        protected static IList<ISort> SortConvert(object sortList)
         {
             IList<ISort> sorts = new List<ISort>();
             if (sortList == null)
@@ -244,5 +247,14 @@ namespace SV.Repository.Base
         }
         #endregion
 
+        protected string GetPageSql(string sql, int pageNum, int pageSize)
+        {
+            var cSql = $"SELECT COUNT(*) AS count FROM ({sql}) c";
+            var dSql =
+                $"SELECT * FROM ({sql}) r JOIN (select id from ({sql}) p limit {pageNum}, {pageSize}) b ON r.ID = b.id";
+            return cSql + ";" + dSql;
+        }
+      
     }
+    
 }
