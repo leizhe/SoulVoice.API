@@ -10,9 +10,7 @@ using DapperExtensions;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
-using Dapper;
 
-    
 
 namespace SV.Repository.Base
 {
@@ -247,11 +245,11 @@ namespace SV.Repository.Base
         }
         #endregion
 
-        protected string GetPageSql(string sql, int pageNum, int pageSize)
+        protected string GetPageSql(string sql,string mainTableName, string mainTableAlias, int pageNum, int pageSize)
         {
-            var cSql = $"SELECT COUNT(*) AS count FROM ({sql}) c";
+            var cSql = $"SELECT COUNT(*) FROM {mainTableName}";
             var dSql =
-                $"SELECT * FROM ({sql}) r JOIN (select id from ({sql}) p limit {pageNum}, {pageSize}) b ON r.ID = b.id";
+                $"{sql} JOIN (SELECT Id FROM {mainTableName} LIMIT {pageNum-1}, {pageSize}) p ON {mainTableAlias}.Id = p.Id";
             return cSql + ";" + dSql;
         }
       
