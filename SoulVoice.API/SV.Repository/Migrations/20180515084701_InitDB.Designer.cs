@@ -11,7 +11,7 @@ using System;
 namespace SV.Repository.Migrations
 {
     [DbContext(typeof(EntityFrameworkContext))]
-    [Migration("20180513075839_InitDB")]
+    [Migration("20180515084701_InitDB")]
     partial class InitDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

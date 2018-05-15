@@ -14,7 +14,7 @@ namespace SV.API
     {
     }
 
-    //Code First Open
+    ////Code First Open
     //public class DbContextFactory : IDesignTimeDbContextFactory<EntityFrameworkContext>
     //{
     //    public EntityFrameworkContext CreateDbContext(string[] args)

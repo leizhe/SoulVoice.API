@@ -19,7 +19,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SV.Application\SV.Application.csproj" />
-    <ProjectReference Include="..\SV.Common\SV.Common.csproj" />
   </ItemGroup>
 
 </Project>

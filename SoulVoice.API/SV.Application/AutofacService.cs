@@ -16,8 +16,8 @@ namespace SV.Application
         {
             IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");
             IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");
-            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
             IoCContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
+            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
             IoCContainer.Register(typeof(BaseService).Assembly, "Service");
             return IoCContainer.Build(services);
         }
