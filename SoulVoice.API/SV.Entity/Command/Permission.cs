@@ -10,9 +10,9 @@ namespace SV.Entity.Command
 
         public ICollection<RolePermission> RolePermissions { get; set; }
 
-        public Permission()
-        {
-            RolePermissions = new HashSet<RolePermission>();
-        }
+        //public Permission()
+        //{
+        //    RolePermissions = new HashSet<RolePermission>();
+        //}
     }
 }

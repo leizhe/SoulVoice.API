@@ -23,7 +23,7 @@ namespace SV.Repository.Base
         }
 
         //private readonly DbContextOption _option;
-        //public EntityFrameworkContext(DbContextOptions options) : base(options) { }//Code first
+        public EntityFrameworkContext(DbContextOptions options) : base(options) { }//Code first
         //public EntityFrameworkContext(DbContextOption option)
         //{
         //    if (option == null)

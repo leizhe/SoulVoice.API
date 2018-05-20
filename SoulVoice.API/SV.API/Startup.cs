@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using AutoMapper;
 using log4net;
 using log4net.Repository;
@@ -25,6 +26,7 @@ namespace SV.API
             //初始化log4net
             LoggerRepository = LogManager.CreateRepository("NETCoreRepository");
             Log4NetHelper.SetConfig(LoggerRepository, "Config\\log4net.config");
+            
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
