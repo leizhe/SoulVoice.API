@@ -11,7 +11,7 @@ namespace SV.Common.IoC
     /// <summary>
     /// Autofac IOC 容器
     /// </summary>
-    public class IoCContainer
+    public class IocContainer
     {
         private static ContainerBuilder _builder = new ContainerBuilder();
         private static IContainer _container;

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using Dapper;
-using DapperExtensions;
-using SV.Common.Extensions;
 using SV.Entity.Query;
 using SV.Repository.Base;
 using SV.Repository.Core.Query;
@@ -54,9 +52,9 @@ namespace SV.Repository.Query
 
             // ExpressionToSql sql = new ExpressionToSql();
 
-            // Expression<FillDic<User, bool>> aaa = u => u.Id == 1 && u.Name.DB_NotLike("123");
+            Expression<Func<User, bool>> aaa = u => u.Id == 1 && u.Name.DB_NotLike("123");
 
-            // Expression<FillDic<User, bool>> bbb = u => u.Id == 1 && u.Name.DB_Like("aa");
+            Expression<Func<User, bool>> bbb = u => u.Id == 1 && u.Name.DB_Like("aa");
 
             // var ss = LambdaToSqlHelper.GetWhereSql(aaa); ;
             // var dsds = sql.GetSql(bbb); ;
@@ -68,17 +66,21 @@ namespace SV.Repository.Query
         
         private List<User> GetListBySql(string sql)
         {
-            var lookup = new Dictionary<long, User>();
-            Conn.Query(sql, FillDic(lookup),splitOn: "Id");
-            return lookup.Values.ToList();
+            return GetUserDictionary(sql).ToList();
         }
 
         private User GetSingleBySql(string sql)
         {
-            var lookup = new Dictionary<long, User>();
-            Conn.Query(sql, FillDic(lookup),splitOn: "Id");
-            return lookup.Values.FirstOrDefault();
+            return GetUserDictionary(sql).FirstOrDefault();
         }
+
+        private Dictionary<long, User>.ValueCollection GetUserDictionary(string sql)
+        {
+            var lookup = new Dictionary<long, User>();
+            Conn.Query(sql, FillDic(lookup));
+            return lookup.Values;
+        }
+
 
         private Func<User, UserRole, Role, User> FillDic(Dictionary<long, User> lookup)
         {

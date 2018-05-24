@@ -14,12 +14,12 @@ namespace SV.Application
     {
         public static IServiceProvider InitIoC(IServiceCollection services)
         {
-            IoCContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");
-            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");
-            IoCContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
-            IoCContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
-            IoCContainer.Register(typeof(BaseService).Assembly, "Service");
-            return IoCContainer.Build(services);
+            IocContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");
+            IocContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");
+            IocContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
+            IocContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
+            IocContainer.Register(typeof(BaseService).Assembly, "Service");
+            return IocContainer.Build(services);
         }
     }
 }

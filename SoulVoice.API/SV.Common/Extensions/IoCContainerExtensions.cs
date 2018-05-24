@@ -5,7 +5,7 @@ namespace SV.Common.Extensions
 {
     public static class IoCContainerExtensions
     {
-        public static void AddAspect(this IoCContainer container)
+        public static void AddAspect(this IocContainer container)
         {
             if(container==null)
                 throw new ArgumentNullException(nameof(container));
