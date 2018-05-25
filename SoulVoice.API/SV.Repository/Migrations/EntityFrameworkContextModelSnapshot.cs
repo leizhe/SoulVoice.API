@@ -20,14 +20,62 @@ namespace SV.Repository.Migrations
                 .HasAnnotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn)
                 .HasAnnotation("ProductVersion", "2.0.2-rtm-10011");
 
+            modelBuilder.Entity("SV.Entity.Command.Action", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Icon");
+
+                    b.Property<int>("InitStatus");
+
+                    b.Property<long?>("MenuId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("No");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("Action");
+                });
+
+            modelBuilder.Entity("SV.Entity.Command.Menu", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("IsLeaf");
+
+                    b.Property<bool>("IsVisible");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("No");
+
+                    b.Property<int>("Order");
+
+                    b.Property<string>("ParentNo");
+
+                    b.Property<string>("Pic");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menu");
+                });
+
             modelBuilder.Entity("SV.Entity.Command.Permission", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<int>("Access");
 
-                    b.Property<string>("Url");
+                    b.Property<int>("AccessValue");
 
                     b.HasKey("Id");
 
@@ -86,7 +134,8 @@ namespace SV.Repository.Migrations
                     b.Property<decimal>("Money");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(100);
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Password")
                         .HasMaxLength(50);
@@ -121,10 +170,17 @@ namespace SV.Repository.Migrations
                     b.ToTable("UserRole");
                 });
 
+            modelBuilder.Entity("SV.Entity.Command.Action", b =>
+                {
+                    b.HasOne("SV.Entity.Command.Menu", "Menu")
+                        .WithMany("Actions")
+                        .HasForeignKey("MenuId");
+                });
+
             modelBuilder.Entity("SV.Entity.Command.RolePermission", b =>
                 {
                     b.HasOne("SV.Entity.Command.Permission", "Permission")
-                        .WithMany("RolePermissions")
+                        .WithMany()
                         .HasForeignKey("PermissionId")
                         .OnDelete(DeleteBehavior.Cascade);
 

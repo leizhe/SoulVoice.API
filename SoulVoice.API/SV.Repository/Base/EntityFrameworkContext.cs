@@ -23,7 +23,9 @@ namespace SV.Repository.Base
         }
 
         //private readonly DbContextOption _option;
-        public EntityFrameworkContext(DbContextOptions options) : base(options) { }//Code first
+
+        //public EntityFrameworkContext(DbContextOptions options) : base(options) { }//Code first
+
         //public EntityFrameworkContext(DbContextOption option)
         //{
         //    if (option == null)
@@ -48,7 +50,8 @@ namespace SV.Repository.Base
         public DbSet<Role> Roles { get; set; }
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
-        public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Menu> Menus { get; set; }
+        public DbSet<Entity.Command.Action> Actions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -58,6 +61,8 @@ namespace SV.Repository.Base
             modelBuilder.Entity<UserRole>().ToTable("UserRole");
             modelBuilder.Entity<Permission>().ToTable("Permission");
             modelBuilder.Entity<RolePermission>().ToTable("RolePermission");
+            modelBuilder.Entity<Menu>().ToTable("Menu");
+            modelBuilder.Entity<Entity.Command.Action>().ToTable("Action");
         }
     }
 }

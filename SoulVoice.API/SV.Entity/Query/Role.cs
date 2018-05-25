@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using DapperExtensions.Mapper;
-using SV.Entity.Command;
-
 namespace SV.Entity.Query
 {
     [Serializable]

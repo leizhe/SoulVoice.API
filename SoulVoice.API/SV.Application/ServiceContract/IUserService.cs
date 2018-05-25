@@ -6,7 +6,7 @@ namespace SV.Application.ServiceContract
 {
     public interface IUserService
     {
-        CreateResult<long> Register(RegisterInput user);
+        
 
 
         GetResults<UserDto> GetUsers(PageInput input);
@@ -27,5 +27,7 @@ namespace SV.Application.ServiceContract
         ////DeleteResult DeleteRole(int userId, int roleId);
 
         //bool Exist(string username, string password);
+
+       
     }
 }

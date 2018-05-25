@@ -7,9 +7,9 @@ namespace SV.Repository.Core.Query
 {
     public interface IUserQueryRepository : IDapperQueryRepository<User>
     {
-        List<User> GetPage(int pageNum, int pageSize, out long outTotal,
-            Expression<Func<User, bool>> expression = null, object sortList = null);
-        List<User> GetAll();
+        User Get(Expression<Func<User, bool>> expression);
         User GetById(long userId);
+        List<User> GetAll();
+        List<User> GetPage(int pageNum, int pageSize, out long outTotal,Expression<Func<User, bool>> expression = null, object sortList = null);
     }
 }

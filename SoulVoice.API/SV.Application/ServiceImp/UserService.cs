@@ -241,30 +241,7 @@ namespace SV.Application.ServiceImp
             return filterExp;
         }
 
-        public CreateResult<long> Register(RegisterInput input)
-        {
-            var result = GetDefault<CreateResult<long>>();
-            //if (IsHasSameName(user.Name, user.Id))
-            //{
-            //    result.Message = "USER_NAME_HAS_EXIST";
-            //    result.StateCode = 0x00302;
-            //    return result;
-            //}
-            var user = new User()
-            {
-                CreationTime = DateTime.UtcNow,
-                Password = input.Password,
-                Email = input.Email,
-                Name = input.Name,
-                Phone = input.Phone,
-                //State = input.State,
-            };
+       
 
-            _userCommand.Add(user);
-            _userCommand.Commit();
-            result.Id = user.Id;
-            result.IsCreated = true;
-            return result;
-        }
     }
 }

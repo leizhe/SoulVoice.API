@@ -12,13 +12,22 @@ namespace SV.Repository.Query
     public class UserQueryRepository : DapperRepositoryBase<User>, IUserQueryRepository
     {
 
-        public List<User> GetAll()
+        public User Get(Expression<Func<User, bool>> expression)
         {
-            var sql = @"SELECT * FROM User AS u 
-                        LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
-                        LEFT JOIN Role AS r ON ur.RoleId=r.Id";
-           
-            return GetListBySql(sql);
+            // IPredicateGroup predicate = DapperLinqBuilder<User>.FromExpression(expression);
+            // IList<ISort> sort = SortConvert(sortList);
+            //// Conn.Query<>()
+
+            // ExpressionToSql sql = new ExpressionToSql();
+
+            //Expression<Func<User, bool>> aaa = u => u.Id == 1 && u.Name.DB_NotLike("123");
+
+            //Expression<Func<User, bool>> bbb = u => u.Id == 1 && u.Name.DB_Like("aa");
+
+            // var ss = LambdaToSqlHelper.GetWhereSql(aaa); ;
+            // var dsds = sql.GetSql(bbb); ;
+            // var ddd = sql.GetSql(expression);
+            throw new NotImplementedException();
         }
 
         public User GetById(long userId)
@@ -28,6 +37,15 @@ namespace SV.Repository.Query
                         LEFT JOIN Role AS r ON ur.RoleId=r.Id
                         WHERE u.Id={userId}";
             return GetSingleBySql(sql);
+        }
+
+        public List<User> GetAll()
+        {
+            var sql = @"SELECT * FROM User AS u 
+                        LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
+                        LEFT JOIN Role AS r ON ur.RoleId=r.Id";
+
+            return GetListBySql(sql);
         }
 
         public List<User> GetPage(int pageNum, int pageSize, out long outTotal, Expression<Func<User, bool>> expression = null, object sortList = null)
@@ -45,24 +63,7 @@ namespace SV.Repository.Query
                 multi.Read(FillDic(lookup), splitOn: "Id");
                 return lookup.Values.ToList();
             }
-
-            // IPredicateGroup predicate = DapperLinqBuilder<User>.FromExpression(expression);
-            // IList<ISort> sort = SortConvert(sortList);
-            //// Conn.Query<>()
-
-            // ExpressionToSql sql = new ExpressionToSql();
-
-            Expression<Func<User, bool>> aaa = u => u.Id == 1 && u.Name.DB_NotLike("123");
-
-            Expression<Func<User, bool>> bbb = u => u.Id == 1 && u.Name.DB_Like("aa");
-
-            // var ss = LambdaToSqlHelper.GetWhereSql(aaa); ;
-            // var dsds = sql.GetSql(bbb); ;
-            // var ddd = sql.GetSql(expression);
-            //throw new NotImplementedException();
         }
-
-        
         
         private List<User> GetListBySql(string sql)
         {
@@ -80,7 +81,6 @@ namespace SV.Repository.Query
             Conn.Query(sql, FillDic(lookup));
             return lookup.Values;
         }
-
 
         private Func<User, UserRole, Role, User> FillDic(Dictionary<long, User> lookup)
         {
@@ -110,5 +110,7 @@ namespace SV.Repository.Query
                 return u;
             };
         }
+
+      
     }
 }
