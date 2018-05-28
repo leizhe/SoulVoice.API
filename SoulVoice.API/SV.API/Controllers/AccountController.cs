@@ -8,24 +8,24 @@ namespace SV.API.Controllers
 
     public class AccountController : Controller
     {
-        private readonly IUserService _userService;
-        public AccountController(IUserService userService)
+        private readonly IAccountService _accountService;
+        public AccountController(IAccountService accountService)
         {
-            _userService = userService;
+            _accountService = accountService;
         }
 
         [HttpGet]
         [Route("api/account/Login")]
-        public string Login(string nameOrEmail, string passWord)
+        public GetResult<LoginOutput> Login(string nameOrEmail, string passWord)
         {
-            return nameOrEmail + passWord;
+            return _accountService.Login(nameOrEmail,passWord);
         }
 
         [HttpPost]
         [Route("api/account/Register")]
         public CreateResult<long> Register([FromBody]RegisterInput input)
         {
-            return _userService.Register(input);
+            return _accountService.Register(input);
         }
 
     }

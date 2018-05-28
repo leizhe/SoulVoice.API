@@ -9,7 +9,7 @@ namespace SV.Repository.Query
 {
     public class AccountQueryRepository : DapperRepositoryBase<User>, IAccountQueryRepository
     {
-        public List<Menu> GetPermissions(long roleId)
+        public List<Menu> GetPermissions(List<long> roleIds)
         {
             throw new NotImplementedException();
         }

@@ -7,6 +7,6 @@ namespace SV.Repository.Core.Query
 {
     public interface IAccountQueryRepository : IDapperQueryRepository<User>
     {
-        List<Menu> GetPermissions(long roleId);
+        List<Menu> GetPermissions(List<long> roleIds);
     }
 }

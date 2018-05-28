@@ -27,8 +27,8 @@ namespace SV.Application.ServiceImp
         public GetResults<UserDto> GetUsers(PageInput input)
         {
             var result = GetDefault<GetResults<UserDto>>();
-            var filterExp = BuildExpression(input);
-            var query = _userQuery.GetPage(input.Current,input.Size,out var pageCount,filterExp,new { Name = true });
+            //var filterExp = BuildExpression(input);
+            var query = _userQuery.GetPage(input.Current,input.Size,out var pageCount,null,new { Name = true });
             result.Total = pageCount;
             result.Data = query.Select(user => new UserDto()
             {

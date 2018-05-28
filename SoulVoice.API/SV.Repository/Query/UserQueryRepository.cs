@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection.Metadata.Ecma335;
 using Dapper;
+using SV.Common.Extensions;
 using SV.Entity.Query;
 using SV.Repository.Base;
 using SV.Repository.Core.Query;
@@ -11,48 +13,27 @@ namespace SV.Repository.Query
 {
     public class UserQueryRepository : DapperRepositoryBase<User>, IUserQueryRepository
     {
-
-        public User Get(Expression<Func<User, bool>> expression)
-        {
-            // IPredicateGroup predicate = DapperLinqBuilder<User>.FromExpression(expression);
-            // IList<ISort> sort = SortConvert(sortList);
-            //// Conn.Query<>()
-
-            // ExpressionToSql sql = new ExpressionToSql();
-
-            //Expression<Func<User, bool>> aaa = u => u.Id == 1 && u.Name.DB_NotLike("123");
-
-            //Expression<Func<User, bool>> bbb = u => u.Id == 1 && u.Name.DB_Like("aa");
-
-            // var ss = LambdaToSqlHelper.GetWhereSql(aaa); ;
-            // var dsds = sql.GetSql(bbb); ;
-            // var ddd = sql.GetSql(expression);
-            throw new NotImplementedException();
-        }
-
+        
         public User GetById(long userId)
         {
-            var sql = $@"SELECT * FROM User AS u 
-                        LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
-                        LEFT JOIN Role AS r ON ur.RoleId=r.Id
-                        WHERE u.Id={userId}";
-            return GetSingleBySql(sql);
+            var where = $@"WHERE u.Id={userId}";
+            return GetSingleByWhere(where);
+        }
+
+        public User GetByAccountAndPassword(string nameOrEmail, string passWord)
+        {
+            var where = $@"WHERE (u.Name='{nameOrEmail}' or u.Email='{nameOrEmail}') and u.Password='{passWord}'";
+            return GetSingleByWhere(where);
         }
 
         public List<User> GetAll()
         {
-            var sql = @"SELECT * FROM User AS u 
-                        LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
-                        LEFT JOIN Role AS r ON ur.RoleId=r.Id";
-
-            return GetListBySql(sql);
+            return GetListByWhere(null);
         }
 
-        public List<User> GetPage(int pageNum, int pageSize, out long outTotal, Expression<Func<User, bool>> expression = null, object sortList = null)
+        public List<User> GetPage(int pageNum, int pageSize, out long outTotal, string where = null, object sortList = null)
         {
-            var baseSql = @"SELECT * FROM User AS u 
-                    LEFT JOIN UserRole AS ur ON u.Id = ur.UserId
-                    LEFT JOIN Role AS r ON ur.RoleId = r.Id";
+            var baseSql = GetBaseSql();
 
             var commandSql = GetPageSql(baseSql,"User","u", pageNum, pageSize);
 
@@ -64,17 +45,35 @@ namespace SV.Repository.Query
                 return lookup.Values.ToList();
             }
         }
-        
-        private List<User> GetListBySql(string sql)
+
+        private string GetBaseSql()
         {
+            return @"SELECT * FROM User AS u 
+                        LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
+                        LEFT JOIN Role AS r ON ur.RoleId=r.Id ";
+        }
+
+        private List<User> GetListByWhere(string where)
+        {
+
+            var sql = GetBaseSql();
+            if (!string.IsNullOrEmpty(where))
+            {
+                sql += where;
+            }
             return GetUserDictionary(sql).ToList();
         }
-
-        private User GetSingleBySql(string sql)
+        
+        private User GetSingleByWhere(string where)
         {
+            var sql = GetBaseSql();
+            if (!string.IsNullOrEmpty(where))
+            {
+                sql += where;
+            }
             return GetUserDictionary(sql).FirstOrDefault();
         }
-
+        
         private Dictionary<long, User>.ValueCollection GetUserDictionary(string sql)
         {
             var lookup = new Dictionary<long, User>();
@@ -111,6 +110,6 @@ namespace SV.Repository.Query
             };
         }
 
-      
+    
     }
 }
