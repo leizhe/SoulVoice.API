@@ -8,8 +8,8 @@ namespace SV.Entity.Command
     public sealed class User : BaseEntity, IHasCreationTime
     {
         [Required]
-        [StringLength(50, MinimumLength = 1, ErrorMessage = "用户名长度不能超过50.")]
-        [Display(Name = "用户名")]
+        [StringLength(50, MinimumLength = 1, ErrorMessage = "The length of the username is not more than 50.")]
+        [Display(Name = "Name")]
         public string Name { get; set; }
         [MaxLength(100)]
         public string Email { get; set; }

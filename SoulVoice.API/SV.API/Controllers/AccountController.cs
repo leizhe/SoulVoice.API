@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
+using SV.Application.Exceptions;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
@@ -25,7 +27,12 @@ namespace SV.API.Controllers
         [Route("api/account/Register")]
         public CreateResult<long> Register([FromBody]RegisterInput input)
         {
-            return _accountService.Register(input);
+            if (ModelState.IsValid)
+            {
+                return _accountService.Register(input);
+            }
+            throw new ModelStateErrorException();
+
         }
 
     }

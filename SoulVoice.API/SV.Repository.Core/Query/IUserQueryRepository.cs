@@ -7,6 +7,7 @@ namespace SV.Repository.Core.Query
 {
     public interface IUserQueryRepository : IDapperQueryRepository<User>
     {
+
         User GetByAccountAndPassword(string nameOrEmail, string passWord);
         User GetById(long userId);
         List<User> GetAll();

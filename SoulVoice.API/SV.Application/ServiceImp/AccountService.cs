@@ -38,7 +38,6 @@ namespace SV.Application.ServiceImp
             var user = _userQuery.GetByAccountAndPassword(nameOrEmail, passWord);
             if (user == null)
             {
-                result.Message = "无此用户，请检查账户和密码";
                 result.StateCode = (int) StatusCode.NameOrPasswordWrong;
                 return result;
             }
@@ -55,27 +54,54 @@ namespace SV.Application.ServiceImp
         public CreateResult<long> Register(RegisterInput input)
         {
             var result = GetDefault<CreateResult<long>>();
-            //if (IsHasSameName(user.Name, user.Id))
-            //{
-            //    result.Message = "USER_NAME_HAS_EXIST";
-            //    result.StateCode = 0x00302;
-            //    return result;
-            //}
-            var user = new User()
+            if (IsHasSameName(input.Name))
+            {
+                result.Message = "The name has exist";
+                result.StateCode = (int)StatusCode.UserNameHasExist;
+                return result;
+            }
+            if (IsHasSameEmail(input.Email))
+            {
+                result.Message = "The email has exist";
+                result.StateCode = (int)StatusCode.UserEmailHasExist;
+                return result;
+            }
+            if (IsHasSamePhone(input.Phone))
+            {
+                result.Message = "The phone has exist";
+                result.StateCode = (int)StatusCode.UserPhoneHasExist;
+                return result;
+            }
+            
+            var user = new User
             {
                 CreationTime = DateTime.UtcNow,
                 Password = input.Password,
                 Email = input.Email,
                 Name = input.Name,
-                Phone = input.Phone
-                //State = input.State,
+                Phone = input.Phone,
+                State = AccountStatus.Available
             };
-
             _userCommand.Add(user);
             _userCommand.Commit();
             result.Id = user.Id;
             result.IsCreated = true;
             return result;
+        }
+
+        private bool IsHasSameName(string name)
+        {
+            return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
+        }
+
+        private bool IsHasSameEmail(string email)
+        {
+            return !string.IsNullOrWhiteSpace(email) && _userQuery.Find(u => u.Email == email).Any();
+        }
+
+        private bool IsHasSamePhone(string phone)
+        {
+            return !string.IsNullOrWhiteSpace(phone) && _userQuery.Find(u => u.Phone == phone).Any();
         }
     }
 }

@@ -83,7 +83,7 @@ namespace SV.Application.ServiceImp
             var result = GetDefault<CreateResult<long>>();
             if (IsHasSameName(userDto.Name, userDto.Id))
             {
-                result.Message = "USER_NAME_HAS_EXIST";
+                //result.Message = "USER_NAME_HAS_EXIST";
                 result.StateCode = 0x00302;
                 return result;
             }
@@ -141,7 +141,7 @@ namespace SV.Application.ServiceImp
             var model = _userQuery.FindSingle(userId);
             if (model == null)
             {
-                result.Message = "USE_NOT_EXIST";
+                //result.Message = "USE_NOT_EXIST";
                 result.StateCode = 0x00402;
                 return result;
             }
