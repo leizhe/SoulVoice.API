@@ -84,6 +84,13 @@ namespace SV.Application.ServiceImp
             };
             _userCommand.Add(user);
             _userCommand.Commit();
+
+			var userRole=new UserRole()
+			{
+				UserId = user.Id,
+				RoleId = RoleType.Member
+			};
+
             result.Id = user.Id;
             result.IsCreated = true;
             return result;
