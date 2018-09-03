@@ -252,7 +252,13 @@ namespace SV.Repository.Base
                 $"{sql} JOIN (SELECT Id FROM {mainTableName} LIMIT {pageNum-1}, {pageSize}) p ON {mainTableAlias}.Id = p.Id";
             return cSql + ";" + dSql;
         }
-      
-    }
+
+	    protected string GetIdsString(List<long> ids)
+	    {
+		    var result = ids.Aggregate("", (current, id) => current + (id + ","));
+		    return result.Substring(0, result.Length - 1);
+	    }
+
+	}
     
 }

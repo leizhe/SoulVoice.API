@@ -33,7 +33,7 @@ namespace SV.Repository.Query
 
         public List<User> GetPage(int pageNum, int pageSize, out long outTotal, string where = null, object sortList = null)
         {
-            var baseSql = GetBaseSql();
+            var baseSql = BaseSql();
 
             var commandSql = GetPageSql(baseSql,"User","u", pageNum, pageSize);
 
@@ -46,7 +46,7 @@ namespace SV.Repository.Query
             }
         }
 
-        private string GetBaseSql()
+        private string BaseSql()
         {
             return @"SELECT * FROM User AS u 
                         LEFT JOIN UserRole AS ur ON u.Id=ur.UserId
@@ -56,7 +56,7 @@ namespace SV.Repository.Query
         private List<User> GetListByWhere(string where)
         {
 
-            var sql = GetBaseSql();
+            var sql = BaseSql();
             if (!string.IsNullOrEmpty(where))
             {
                 sql += where;
@@ -66,7 +66,7 @@ namespace SV.Repository.Query
         
         private User GetSingleByWhere(string where)
         {
-            var sql = GetBaseSql();
+            var sql = BaseSql();
             if (!string.IsNullOrEmpty(where))
             {
                 sql += where;

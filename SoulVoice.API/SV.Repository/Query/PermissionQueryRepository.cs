@@ -11,9 +11,16 @@ namespace SV.Repository.Query
     {
 	    public List<Permission> GetPermissionsByRoleIds(List<long> roleIds)
 	    {
-		    var sql = @"SELECT p.Access,p.AccessValue FROM rolepermission r 
-							LEFT JOIN permission p ON r.PermissionId = p.Id ";
+		    var where = $"WHERE r.RoleId IN({ GetIdsString(roleIds)})";
+		    var sql = BaseSql() + where;
 		    return Conn.Query<Permission>(sql).ToList();
 		}
-    }
+
+	    private string BaseSql()
+	    {
+			return @"SELECT p.Access,p.AccessValue FROM rolepermission r 
+							LEFT JOIN permission p ON r.PermissionId = p.Id ";
+		}
+
+	}
 }

@@ -19,7 +19,7 @@ namespace SV.Entity.Query
         public ICollection<Action> Actions { get; set; }
 		public Menu()
 		{
-			Actions = new List<Action>();
+			Actions = new HashSet<Action>();
 		}
 
 		[Serializable]

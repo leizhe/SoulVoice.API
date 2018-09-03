@@ -18,18 +18,14 @@ namespace SV.Repository.Query
 			return GetListByWhere(where);
 		}
 
-		private string GetIdsString(List<long> ids)
-		{
-			var result = ids.Aggregate("", (current, id) => current + (id + ","));
-			return result.Substring(0, result.Length - 1);
-		}
+		
 
 		public List<Menu> GetAll()
         {
             return GetListByWhere(null);
         }
 
-        private string GetBaseSql()
+        private string BaseSql()
         {
             return @"SELECT * FROM menu AS m 
                         LEFT JOIN action AS a ON m.Id=a.MenuId ";
@@ -38,7 +34,7 @@ namespace SV.Repository.Query
         private List<Menu> GetListByWhere(string where)
         {
 
-            var sql = GetBaseSql();
+            var sql = BaseSql();
             if (!string.IsNullOrEmpty(where))
             {
                 sql += where;

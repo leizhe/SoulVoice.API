@@ -52,9 +52,15 @@ namespace SV.Repository.Base
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Menu> Menus { get; set; }
         public DbSet<Entity.Command.Action> Actions { get; set; }
+	    public DbSet<Classify> Classifies { get; set; }
+	    public DbSet<Album> Albums { get; set; }
+	    public DbSet<AlbumComment> AlbumComments { get; set; }
+	    public DbSet<Sound> Sounds { get; set; }
+	    public DbSet<SoundComment> SoundComments { get; set; }
+	    public DbSet<Subscription> Subscriptions { get; set; }
 
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>().ToTable("User");
             modelBuilder.Entity<Role>().ToTable("Role");
@@ -63,6 +69,12 @@ namespace SV.Repository.Base
             modelBuilder.Entity<RolePermission>().ToTable("RolePermission");
             modelBuilder.Entity<Menu>().ToTable("Menu");
             modelBuilder.Entity<Entity.Command.Action>().ToTable("Action");
-        }
+	        modelBuilder.Entity<Classify>().ToTable("Classify");
+	        modelBuilder.Entity<Album>().ToTable("Album");
+	        modelBuilder.Entity<AlbumComment>().ToTable("AlbumComment");
+	        modelBuilder.Entity<Sound>().ToTable("Sound");
+	        modelBuilder.Entity<SoundComment>().ToTable("SoundComment");
+	        modelBuilder.Entity<Subscription>().ToTable("Subscription");
+		}
     }
 }
