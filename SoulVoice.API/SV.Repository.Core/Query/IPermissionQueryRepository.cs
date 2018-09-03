@@ -5,8 +5,8 @@ using SV.Entity.Query;
 
 namespace SV.Repository.Core.Query
 {
-    public interface IAccountQueryRepository : IDapperQueryRepository<User>
+    public interface IPermissionQueryRepository : IDapperQueryRepository<Permission>
     {
-        List<Menu> GetPermissions(List<long> roleIds);
+	    List<Permission> GetPermissionsByRoleIds(List<long> ids);
     }
 }

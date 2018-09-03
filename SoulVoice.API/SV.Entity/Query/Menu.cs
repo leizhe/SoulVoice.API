@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using DapperExtensions.Mapper;
+using SV.Entity.Auditing;
 
 namespace SV.Entity.Query
 {
-    public sealed class Menu : BaseEntity
+    public sealed class Menu : BaseEntity, IEntity
     {
         public string No { get; set; }
         public string ParentNo { get; set; }
@@ -15,9 +16,13 @@ namespace SV.Entity.Query
         public bool IsLeaf { get; set; }
         public string Pic { get; set; }
 
-        public ICollection<Command.Action> Actions { get; set; }
+        public ICollection<Action> Actions { get; set; }
+		public Menu()
+		{
+			Actions = new List<Action>();
+		}
 
-        [Serializable]
+		[Serializable]
         public sealed class MenuOrmMapper : ClassMapper<Menu>
         {
             public MenuOrmMapper()

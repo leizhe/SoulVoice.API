@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using DapperExtensions.Mapper;
+using SV.Entity.Auditing;
 
 namespace SV.Entity.Query
 {
-    public sealed class Permission : BaseEntity
+    public sealed class Permission : BaseEntity, IEntity
     {
-        public int Access { get; set; }
-        public int AccessValue { get; set; }
+        public long Access { get; set; }
+        public long AccessValue { get; set; }
 
         [Serializable]
         public sealed class PermissionOrmMapper : ClassMapper<Permission>

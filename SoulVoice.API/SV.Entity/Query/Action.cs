@@ -9,7 +9,8 @@ namespace SV.Entity.Query
         public string No { get; set; }
         public int InitStatus { get; set; }
         public string Icon { get; set; }
-        public Menu Menu { get; set; }
+		public long MenuId { get; set; }
+        //public Menu Menu { get; set; }
         [Serializable]
         public sealed class ActionOrmMapper : ClassMapper<Action>
         {

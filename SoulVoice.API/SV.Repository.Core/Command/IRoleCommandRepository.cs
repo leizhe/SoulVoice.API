@@ -1,10 +1,9 @@
-﻿//using ED.Models.Command;
-//using SV.Repository.Core;
+﻿using SV.Entity.Command;
 
-//namespace ED.Repositories.Core.Command
-//{
-//    public interface IRoleCommandRepository : IEntityFrameworkCommandRepository<Role>
-//    {
-         
-//    }
-//}
+namespace SV.Repository.Core.Command
+{
+	public interface IRoleCommandRepository : IEntityFrameworkCommandRepository<Role>
+	{
+
+	}
+}

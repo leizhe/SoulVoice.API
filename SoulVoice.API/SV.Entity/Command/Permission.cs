@@ -4,8 +4,8 @@ namespace SV.Entity.Command
 {
     public sealed class Permission : BaseEntity
     {
-        public int Access { get; set; }
-        public int AccessValue { get; set; }
+        public long Access { get; set; }
+        public long AccessValue { get; set; }
         
     }
 }

@@ -17,19 +17,26 @@ namespace SV.Application.ServiceImp
     public class AccountService : BaseService, IAccountService
     {
         private readonly IMapper _mapper;
-        private readonly IAccountQueryRepository _accountQuery;
-        private readonly IUserQueryRepository _userQuery;
+        private readonly IPermissionQueryRepository _permissionQuery;
+	    private readonly IMenuQueryRepository _menuQuery;
+		private readonly IUserQueryRepository _userQuery;
         private readonly IUserCommandRepository _userCommand;
+	    private readonly IUserRoleCommandRepository _userRoleCommand;
+		
 
-        public AccountService(IMapper mapper,
-            IAccountQueryRepository accountQueryRepository,
-            IUserQueryRepository userQueryRepository,
-            IUserCommandRepository userCommandRepository)
+		public AccountService(IMapper mapper,
+            IPermissionQueryRepository permissionQueryRepository,
+			IMenuQueryRepository menuQueryRepository,
+			IUserQueryRepository userQueryRepository,
+            IUserCommandRepository userCommandRepository,
+			IUserRoleCommandRepository userRoleCommandRepository)
         {
             _mapper = mapper;
-            _accountQuery = accountQueryRepository;
-            _userQuery = userQueryRepository;
+	        _permissionQuery = permissionQueryRepository;
+			_menuQuery = menuQueryRepository;
+			_userQuery = userQueryRepository;
             _userCommand = userCommandRepository;
+	        _userRoleCommand = userRoleCommandRepository;
         }
 
         public GetResult<LoginOutput> Login(string nameOrEmail, string passWord)
@@ -41,12 +48,11 @@ namespace SV.Application.ServiceImp
                 result.StateCode = (int) StatusCode.NameOrPasswordWrong;
                 return result;
             }
-            var userMenus = _accountQuery.GetPermissions(user.UserRoles.Select(z => z.RoleId).ToList());
 
             result.Data = new LoginOutput
             {
                 UserName = user.Name,
-                Menus = _mapper.Map<List<MenuDto>>(userMenus)
+                Menus = GetPermissionsByRoleIds(user.UserRoles.Select(z => z.RoleId).ToList())
             };
             return result;
         }
@@ -85,18 +91,30 @@ namespace SV.Application.ServiceImp
             _userCommand.Add(user);
             _userCommand.Commit();
 
-			var userRole=new UserRole()
+			var userRole=new UserRole
 			{
 				UserId = user.Id,
 				RoleId = RoleType.Member
 			};
+	        _userRoleCommand.Add(userRole);
+			_userRoleCommand.Commit();
 
-            result.Id = user.Id;
+			result.Id = user.Id;
             result.IsCreated = true;
             return result;
         }
 
-        private bool IsHasSameName(string name)
+	    private List<MenuDto> GetPermissionsByRoleIds(List<long> roleIds)
+	    {
+		    var permissions= _permissionQuery.GetPermissionsByRoleIds(roleIds);
+		    var permissionMenuIds = permissions.Where(p => p.Access.Equals(PermissionAccess.Menu)).Select(p => p.AccessValue).ToList();
+		    var permissionActionIds = permissions.Where(p => p.Access.Equals(PermissionAccess.Action)).Select(p => p.AccessValue).ToList();
+			var userMenus = _menuQuery.GetByIds(permissionMenuIds, permissionActionIds);
+		    return _mapper.Map<List<MenuDto>>(userMenus);
+
+	    }
+
+		private bool IsHasSameName(string name)
         {
             return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
         }

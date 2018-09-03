@@ -19,4 +19,10 @@
 		public const byte Anchor = 3;
 	}
 
+	public class PermissionAccess
+	{
+		public const int Menu = 0;
+		public const int Action = 1;
+	}
+
 }

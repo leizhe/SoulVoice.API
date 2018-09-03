@@ -5,7 +5,7 @@ using SV.Application.Dtos;
 
 namespace SV.Application.Output
 {
-    public class LoginOutput: OutputBase
+    public class LoginOutput
     {
         public string UserName { get; set; }
         public List<MenuDto> Menus { get; set; }
