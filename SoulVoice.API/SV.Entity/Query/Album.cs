@@ -5,7 +5,7 @@ using SV.Entity.Auditing;
 
 namespace SV.Entity.Query
 {
-	public sealed class Album : BaseEntity, ICreationAudited
+	public sealed class Album : BaseEntity, ICreationAudited, IEntity
 	{
 		public long ClassifyId { get; set; }
 		public string Name { get; set; }

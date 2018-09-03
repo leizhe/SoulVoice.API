@@ -7,8 +7,8 @@ using SV.Application.ServiceContract;
 
 namespace SV.API.Controllers
 {
-
-    public class AccountController : Controller
+	[Produces("application/json")]
+	public class AccountController : Controller
     {
         private readonly IAccountService _accountService;
         public AccountController(IAccountService accountService)
