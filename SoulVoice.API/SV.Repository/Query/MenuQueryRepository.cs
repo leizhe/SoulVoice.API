@@ -39,11 +39,11 @@ namespace SV.Repository.Query
             {
                 sql += where;
             }
-            return GetUserDictionary(sql).ToList();
+            return GetDictionary(sql).ToList();
         }
         
         
-        private Dictionary<long, Menu>.ValueCollection GetUserDictionary(string sql)
+        private Dictionary<long, Menu>.ValueCollection GetDictionary(string sql)
         {
             var lookup = new Dictionary<long, Menu>();
             Conn.Query(sql, FillDic(lookup));

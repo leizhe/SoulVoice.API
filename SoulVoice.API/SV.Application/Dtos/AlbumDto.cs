@@ -18,5 +18,6 @@ namespace SV.Application.Dtos
 		public int Status { get; set; }
 		public long? CreatorUserId { get; set; }
 		public DateTime CreationTime { get; set; }
+		public string CreatorUserName { get; set; }
 	}
 }

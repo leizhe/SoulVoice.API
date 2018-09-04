@@ -24,6 +24,19 @@ namespace SV.API.Controllers
 			return _albumService.GetAlbumPageByClassifyId(classifyId, input);
 		}
 
+		[HttpGet]
+		[Route("api/Album/Rank")]
+		public GetResults<AlbumDto> GetRank(long classifyId, PageInput input)
+		{
+			return _albumService.GetAlbumRankByClassifyId(classifyId, input);
+		}
+
+		[HttpGet]
+		[Route("api/Album/Filter")]
+		public GetResults<AlbumDto> Filter(PageFilterInput input)
+		{
+			return _albumService.FilterAlbum(input);
+		}
 	}
 
 }

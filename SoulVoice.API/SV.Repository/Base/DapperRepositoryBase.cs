@@ -249,7 +249,7 @@ namespace SV.Repository.Base
         {
             var cSql = $"SELECT COUNT(*) FROM {mainTableName}";
             var dSql =
-                $"{sql} JOIN (SELECT Id FROM {mainTableName} LIMIT {pageNum-1}, {pageSize}) p ON {mainTableAlias}.Id = p.Id";
+                $"{sql} JOIN (SELECT Id FROM {mainTableName} LIMIT {pageNum-1}, {pageSize}) p ON {mainTableAlias}.Id = p.Id ";
             return cSql + ";" + dSql;
         }
 

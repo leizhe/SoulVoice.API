@@ -21,6 +21,7 @@ namespace SV.Entity.Query
 		public DateTime CreationTime { get; set; }
 		public Classify Classify { get; set; }
 		public ICollection<Sound> Sounds { get; set; }
+		public User CreatorUser { get; set; }
 		[Serializable]
 		public sealed class AlbumOrmMapper : ClassMapper<Album>
 		{
@@ -29,6 +30,7 @@ namespace SV.Entity.Query
 				Table("Album");
 				Map(f => f.Classify).Ignore();
 				Map(f => f.Sounds).Ignore();
+				Map(f => f.CreatorUser).Ignore();
 				Map(f => f.Id).Key(KeyType.Identity);
 				AutoMap();
 			}
