@@ -9,20 +9,21 @@ using SV.Application.ServiceContract;
 namespace SV.API.Controllers
 {
 	[Produces("application/json")]
-	public class ClassifyController : Controller
-    {
-        private readonly IClassifyService _classifyService;
-        public ClassifyController(IClassifyService classifyService)
-        {
-	        _classifyService = classifyService;
-        }
+	public class AlbumController : Controller
+	{
+		private readonly IAlbumService _albumService;
+		public AlbumController(IAlbumService albumService)
+		{
+			_albumService = albumService;
+		}
 
-        [HttpGet]
-        [Route("api/Classify/All")]
-        public GetResults<ClassifyDto> Login()
-        {
-            return _classifyService.GetAll();
-        }
-		
-    }
+		[HttpGet]
+		[Route("api/Album/Page")]
+		public GetResults<AlbumDto> GetPage(long classifyId, PageInput input)
+		{
+			return _albumService.GetAlbumPageByClassifyId(classifyId, input);
+		}
+
+	}
+
 }

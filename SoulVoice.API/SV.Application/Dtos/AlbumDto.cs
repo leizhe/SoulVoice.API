@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using DapperExtensions.Mapper;
-using SV.Entity.Auditing;
+using SV.Entity.Command;
 
-namespace SV.Entity.Query
+namespace SV.Application.Dtos
 {
-	public sealed class Album : BaseEntity, ICreationAudited, IEntity
+	public sealed class AlbumDto : BaseEntityDto
 	{
 		public long ClassifyId { get; set; }
 		public string Name { get; set; }
@@ -19,19 +18,5 @@ namespace SV.Entity.Query
 		public int Status { get; set; }
 		public long? CreatorUserId { get; set; }
 		public DateTime CreationTime { get; set; }
-		public Classify Classify { get; set; }
-		public ICollection<Sound> Sounds { get; set; }
-		[Serializable]
-		public sealed class AlbumOrmMapper : ClassMapper<Album>
-		{
-			public AlbumOrmMapper()
-			{
-				Table("Album");
-				Map(f => f.Classify).Ignore();
-				Map(f => f.Sounds).Ignore();
-				Map(f => f.Id).Key(KeyType.Identity);
-				AutoMap();
-			}
-		}
 	}
 }

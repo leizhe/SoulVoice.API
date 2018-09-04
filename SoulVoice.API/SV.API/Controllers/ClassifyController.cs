@@ -8,21 +8,22 @@ using SV.Application.ServiceContract;
 
 namespace SV.API.Controllers
 {
+	
 	[Produces("application/json")]
-	public class AlbumController : Controller
-    {
-        private readonly IAlbumService _albumService;
-        public AlbumController(IAlbumService albumService)
-        {
-	        _albumService = albumService;
-        }
+	public class ClassifyController : Controller
+	{
+		private readonly IClassifyService _classifyService;
+		public ClassifyController(IClassifyService classifyService)
+		{
+			_classifyService = classifyService;
+		}
 
-        //[HttpGet]
-        //[Route("api/Classify/All")]
-        //public GetResults<ClassifyDto> Login()
-        //{
-        //    return _classifyService.GetAll();
-        //}
-		
-    }
+		[HttpGet]
+		[Route("api/Classify/All")]
+		public GetResults<ClassifyDto> GetAll()
+		{
+			return _classifyService.GetAll();
+		}
+
+	}
 }

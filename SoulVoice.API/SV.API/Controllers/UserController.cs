@@ -20,13 +20,13 @@ namespace SV.API.Controllers
         [Route("api/user/GetAllUsers")]
         public GetResults<UserDto> GetAllUsers()
         {
-            PageInput input = new PageInput() { Current = 1, Size = 10 };
+	        PageFilterInput input = new PageFilterInput() { Current = 1, Size = 10 };
             return _userService.GetUsers(input);
         }
 
         [HttpGet]
         [Route("api/user/GetUsers")]
-        public GetResults<UserDto> GetUsers(PageInput input)
+        public GetResults<UserDto> GetUsers(PageFilterInput input)
         {
             return _userService.GetUsers(input);
         }

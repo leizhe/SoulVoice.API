@@ -24,7 +24,7 @@ namespace SV.Application.ServiceImp
             _userCommand = userCommandRepository;
         }
 
-        public GetResults<UserDto> GetUsers(PageInput input)
+        public GetResults<UserDto> GetUsers(PageFilterInput input)
         {
             var result = GetDefault<GetResults<UserDto>>();
             //var filterExp = BuildExpression(input);
@@ -219,22 +219,22 @@ namespace SV.Application.ServiceImp
             return !string.IsNullOrWhiteSpace(name) && _userQuery.Find(u => u.Name == name).Any();
         }
 
-        private Expression<Func<Entity.Query.User, bool>> BuildExpression(PageInput pageInput)
+        private Expression<Func<Entity.Query.User, bool>> BuildExpression(PageFilterInput pageInput)
         {
             Expression<Func<Entity.Query.User, bool>> filterExp = user => true;
-            if (string.IsNullOrWhiteSpace(pageInput.Name))
+            if (string.IsNullOrWhiteSpace(pageInput.Filter))
                 return filterExp;
 
             switch (pageInput.Type)
             {
                 case 0:
-                    filterExp = user => user.Name.Contains(pageInput.Name) || user.Email.Contains(pageInput.Name);
+                    filterExp = user => user.Name.Contains(pageInput.Filter) || user.Email.Contains(pageInput.Filter);
                     break;
                 case 1:
-                    filterExp = user => user.Name.Contains(pageInput.Name);
+                    filterExp = user => user.Name.Contains(pageInput.Filter);
                     break;
                 case 2:
-                    filterExp = user => user.Email.Contains(pageInput.Name);
+                    filterExp = user => user.Email.Contains(pageInput.Filter);
                     break;
             }
 

@@ -20,7 +20,7 @@ namespace SV.Application
 	        CreateMap<Entity.Query.Menu, MenuDto>();
 	        CreateMap<Entity.Query.Action, ActionDto>();
 	        CreateMap<Entity.Query.Classify, ClassifyDto>();
-			
+	        CreateMap<Entity.Query.Album, AlbumDto>();
 			//CreateMap<Entity.Query.User, UserDto>()
 			//    .ConstructUsing(
 			//        dto =>

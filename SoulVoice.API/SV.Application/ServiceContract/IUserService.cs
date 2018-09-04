@@ -9,7 +9,7 @@ namespace SV.Application.ServiceContract
         
 
 
-        GetResults<UserDto> GetUsers(PageInput input);
+        GetResults<UserDto> GetUsers(PageFilterInput input);
 
         //UpdateResult UpdateUser(UserDto user);
 
