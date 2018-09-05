@@ -23,11 +23,13 @@ namespace SV.Application.Status
         UserPhoneHasExist = 0x2003,
         UserEmailHasExist = 0x2004,
         UserNameHasExist = 0x2005,
-        //1.kkkkkkkk
+		//1.Album
+	    AlbumNotExist = 0x3000,
+	    AlbumNameHasExist = 0x3001,
 
-        //2.hkjhk
+		//2.hkjhk
 
-        失败 = 0x8000,
+		失败 = 0x8000,
         没有执行 = 0x8001,
         未知错误 = 0x8FFF
     }

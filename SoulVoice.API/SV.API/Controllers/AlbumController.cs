@@ -37,6 +37,20 @@ namespace SV.API.Controllers
 		{
 			return _albumService.FilterAlbum(input);
 		}
+
+		[HttpPost]
+		[Route("api/Album")]
+		public CreateResult<long> Add(AlbumInput input)
+		{
+			return _albumService.AddAlbum(input);
+		}
+
+		[HttpPut]
+		[Route("api/Album")]
+		public UpdateResult Update(AlbumInput input)
+		{
+			return _albumService.UpdateAlbum(input);
+		}
 	}
 
 }

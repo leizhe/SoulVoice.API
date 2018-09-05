@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
+using System.Linq;
 using AutoMapper;
 using SV.Application.Dtos;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
+using SV.Application.Status;
+using SV.Entity.Command;
+using SV.Repository.Core.Command;
 using SV.Repository.Core.Query;
 
 namespace SV.Application.ServiceImp
@@ -14,16 +17,62 @@ namespace SV.Application.ServiceImp
 	{
         private readonly IMapper _mapper;
 		private readonly IAlbumQueryRepository _albumQuery;
+		private readonly IAlbumCommandRepository _albumCommand;
 		
 
 		public AlbumService(IMapper mapper,
-			IAlbumQueryRepository albumQueryRepository
-		   )
+			IAlbumQueryRepository albumQueryRepository,
+			IAlbumCommandRepository albumCommandRepository)
         {
             _mapper = mapper;
 	        _albumQuery = albumQueryRepository;
+			_albumCommand = albumCommandRepository;
 
-        }
+		}
+
+		public CreateResult<long> AddAlbum(AlbumInput input)
+		{
+			var result = GetDefault<CreateResult<long>>();
+			var album = _mapper.Map<Album>(input);
+			album.CreationTime=DateTime.UtcNow;
+			album.LastUpdate = DateTime.UtcNow;
+			album.PlayCount = 0;
+			album.BuyCount = 0;
+			album.SubCount = 0;
+			_albumCommand.Add(album);
+			_albumCommand.Commit();
+			result.Id = album.Id;
+			result.IsCreated = true;
+			return result;
+		}
+
+		public UpdateResult UpdateAlbum(AlbumInput input)
+		{
+			var result = GetDefault<UpdateResult>();
+			var existAlbum = _albumQuery.FindSingle(u => u.Id == input.Id);
+			if (existAlbum == null)
+			{
+				result.Message = "The Album not exist";
+				result.StateCode = (int)StatusCode.AlbumNotExist;
+				return result;
+			}
+			if (IsHasSameName(input.Name, existAlbum.Id))
+			{
+				result.Message = "The AlbumName has exist";
+				result.StateCode = (int)StatusCode.AlbumNameHasExist;
+				return result;
+			}
+			_albumCommand.Update(p => p.Id == existAlbum.Id, u => new Album()
+			{
+				ClassifyId = input.ClassifyId,
+				Pic =input.Pic,
+				Name = input.Name,
+				Memo = input.Memo,
+				Price = input.Price ?? 0
+			});
+			result.IsSaved = true;
+			return result;
+		}
 
 		public GetResults<AlbumDto> FilterAlbum(PageFilterInput input)
 		{
@@ -51,6 +100,10 @@ namespace SV.Application.ServiceImp
 			result.Total = pageCount;
 			return result;
 		}
-		
+		private bool IsHasSameName(string name,long id)
+		{
+			return !string.IsNullOrWhiteSpace(name) && _albumQuery.Find(a => a.Name == name&&a.Id==id).Any();
+		}
+
 	}
 }

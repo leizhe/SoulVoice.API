@@ -4,8 +4,8 @@ using SV.Repository.Core.Command;
 
 namespace SV.Repository.Command
 {
-    public class UserCommandRepository : EntityFrameworkRepositoryBase<User>, IUserCommandRepository
-    {
+    public class AlbumCommandRepository : EntityFrameworkRepositoryBase<Album>, IAlbumCommandRepository
+	{
         
     }
 }

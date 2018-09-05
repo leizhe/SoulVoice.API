@@ -9,8 +9,8 @@ namespace SV.Application.ServiceContract
 	    GetResults<AlbumDto> GetAlbumPageByClassifyId(long classifyId, PageInput input);
 	    GetResults<AlbumDto> GetAlbumRankByClassifyId(long classifyId, PageInput input);
 		GetResults<AlbumDto> FilterAlbum(PageFilterInput input);
+	    CreateResult<long> AddAlbum(AlbumInput input);
+	    UpdateResult UpdateAlbum(AlbumInput input);
 
-	  
-		
 	}
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using SV.Application.Dtos;
+using SV.Application.Input;
 
 namespace SV.Application
 {
@@ -22,6 +23,7 @@ namespace SV.Application
 	        CreateMap<Entity.Query.Classify, ClassifyDto>();
 	        CreateMap<Entity.Query.Album, AlbumDto>()
 				.ForMember(dest => dest.CreatorUserName, opt => opt.MapFrom(p=>p.CreatorUser.Name));
+	        CreateMap<AlbumInput, Entity.Command.Album>(); 
 			//CreateMap<Entity.Query.User, UserDto>()
 			//    .ConstructUsing(
 			//        dto =>
