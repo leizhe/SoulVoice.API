@@ -102,7 +102,7 @@ namespace SV.Application.ServiceImp
 		}
 		private bool IsHasSameName(string name,long id)
 		{
-			return !string.IsNullOrWhiteSpace(name) && _albumQuery.Find(a => a.Name == name&&a.Id==id).Any();
+			return !string.IsNullOrWhiteSpace(name) && _albumQuery.Exists(a => a.Name == name && a.Id==id);
 		}
 
 	}
