@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SV.Application.Dtos;
-using SV.Application.Exceptions;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
