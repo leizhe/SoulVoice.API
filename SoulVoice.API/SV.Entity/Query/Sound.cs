@@ -20,6 +20,7 @@ namespace SV.Entity.Query
 			public SoundOrmMapper()
 			{
 				Table("Sound");
+				Map(f => f.Album).Ignore();
 				AutoMap();
 			}
 		}

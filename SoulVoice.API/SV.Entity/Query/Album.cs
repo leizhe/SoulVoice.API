@@ -22,6 +22,10 @@ namespace SV.Entity.Query
 		public Classify Classify { get; set; }
 		public ICollection<Sound> Sounds { get; set; }
 		public User CreatorUser { get; set; }
+		public Album()
+		{
+			Sounds = new HashSet<Sound>();
+		}
 		[Serializable]
 		public sealed class AlbumOrmMapper : ClassMapper<Album>
 		{

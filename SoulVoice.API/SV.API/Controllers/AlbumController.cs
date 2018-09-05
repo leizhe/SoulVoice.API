@@ -36,6 +36,13 @@ namespace SV.API.Controllers
 			return _albumService.FilterAlbum(input);
 		}
 
+		[HttpGet]
+		[Route("api/Album")]
+		public GetResult<AlbumDto> Get(long albumId)
+		{
+			return _albumService.GetAlbum(albumId);
+		}
+
 		[HttpPost]
 		[Route("api/Album")]
 		public CreateResult<long> Add(AlbumInput input)

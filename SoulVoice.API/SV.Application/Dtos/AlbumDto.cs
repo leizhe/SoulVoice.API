@@ -19,5 +19,6 @@ namespace SV.Application.Dtos
 		public long? CreatorUserId { get; set; }
 		public DateTime CreationTime { get; set; }
 		public string CreatorUserName { get; set; }
+		public ICollection<SoundDto> Sounds { get; set; }
 	}
 }

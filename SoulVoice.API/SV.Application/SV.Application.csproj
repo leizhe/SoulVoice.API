@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ServiceContract\IPermissionService.cs" />
+    <Compile Remove="ServiceContract\IRoleService.cs" />
+    <Compile Remove="ServiceContract\ITestService.cs" />
+    <Compile Remove="ServiceContract\IUserService.cs" />
+    <Compile Remove="ServiceImp\PermissionService.cs" />
+    <Compile Remove="ServiceImp\RoleService.cs" />
+    <Compile Remove="ServiceImp\TestService.cs" />
+    <Compile Remove="ServiceImp\UserService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
   </ItemGroup>
 

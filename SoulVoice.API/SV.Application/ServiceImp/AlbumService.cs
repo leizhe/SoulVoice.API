@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
 using SV.Application.Dtos;
 using SV.Application.Input;
@@ -105,5 +104,18 @@ namespace SV.Application.ServiceImp
 			return !string.IsNullOrWhiteSpace(name) && _albumQuery.Exists(a => a.Name == name && a.Id==id);
 		}
 
+		public GetResult<AlbumDto> GetAlbum(long albumId)
+		{
+			var result = GetDefault<GetResult<AlbumDto>>();
+			var model = _albumQuery.GetById(albumId);
+			if (model == null)
+			{
+				result.Message = "The Album not exist";
+				result.StateCode = (int)StatusCode.AlbumNotExist;
+				return result;
+			}
+			result.Data = _mapper.Map<AlbumDto>(model);
+			return result;
+		}
 	}
 }

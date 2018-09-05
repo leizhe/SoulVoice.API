@@ -13,6 +13,12 @@ namespace SV.Repository.Query
 {
 	public class AlbumQueryRepository : DapperRepositoryBase<Album>, IAlbumQueryRepository
 	{
+		public Album GetById(long albumId)
+		{
+			var where = $@"WHERE a.Id={albumId}";
+			return GetSingleByWhere(where);
+		}
+
 		public List<Album> GetPageByClassifyId(int pageNum, int pageSize, out long outTotal, long classifyId)
 		{
 			var where = $"WHERE a.ClassifyId={classifyId} ORDER BY a.LastUpdate DESC";
@@ -43,7 +49,46 @@ namespace SV.Repository.Query
 						LEFT JOIN User AS u ON a.CreatorUserId=u.Id ";
 		}
 
-		private Func<Album, User, Album> FillDic()
+		private string BaseIncludeSoundSql()
+		{
+			return @"SELECT a.*,u.*,s.* FROM album AS a 
+						LEFT JOIN User AS u ON a.CreatorUserId=u.Id
+						LEFT JOIN Sound AS s ON a.Id=s.AlbumId " ;
+		}
+		private Album GetSingleByWhere(string where)
+		{
+			var sql = BaseIncludeSoundSql();
+			if (!string.IsNullOrEmpty(where))
+			{
+				sql += where;
+			}
+			return GetAlbumDictionary(sql).FirstOrDefault();
+		}
+
+		private Dictionary<long, Album>.ValueCollection GetAlbumDictionary(string sql)
+		{
+			var lookup = new Dictionary<long, Album>();
+			Conn.Query(sql, FillDicIncludeSound(lookup));
+			return lookup.Values;
+		}
+
+		private Func<Album, User, Sound, Album> FillDicIncludeSound(Dictionary<long, Album> lookup)
+		{
+			return (album, user, sound) =>
+			{
+				if (!lookup.TryGetValue(album.Id, out var tmp))
+				{
+					tmp = album;
+					lookup.Add(album.Id, tmp);
+				}
+				tmp.Sounds.Add(sound);
+				tmp.CreatorUser = user;
+				return album;
+			};
+		}
+
+
+		private Func<Album, User,Album> FillDic()
 		{
 			return (album, user) =>
 			{
