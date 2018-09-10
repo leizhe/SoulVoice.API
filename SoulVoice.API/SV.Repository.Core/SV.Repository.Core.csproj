@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Query\IRoleQueryRepository.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SV.Common\SV.Common.csproj" />
     <ProjectReference Include="..\SV.Entity\SV.Entity.csproj" />
   </ItemGroup>

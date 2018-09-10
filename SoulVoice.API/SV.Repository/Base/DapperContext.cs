@@ -15,7 +15,7 @@ namespace SV.Repository.Base
             if (string.IsNullOrEmpty(DbContextOption.QueryString))
                 throw new ArgumentNullException(nameof(DbContextOption.QueryString));
             DapperExtensions.DapperExtensions.SqlDialect = new MySqlDialect();
-            this.Conn = new MySqlConnection(DbContextOption.QueryString);
+            Conn = new MySqlConnection(DbContextOption.QueryString);
         }
         
 

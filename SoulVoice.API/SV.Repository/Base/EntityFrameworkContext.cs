@@ -2,7 +2,6 @@
 using SV.Common.Options;
 using SV.Entity.Command;
 using System;
-using System.Configuration;
 
 namespace SV.Repository.Base
 {
