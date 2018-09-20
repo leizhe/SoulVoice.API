@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SV.Application.Dtos;
 using SV.Application.Input;
 using SV.Application.Output;
@@ -6,6 +7,7 @@ using SV.Application.ServiceContract;
 
 namespace SV.API.Controllers
 {
+	[Authorize]
 	[Produces("application/json")]
 	public class AlbumController : Controller
 	{

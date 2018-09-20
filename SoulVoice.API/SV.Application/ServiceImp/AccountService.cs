@@ -48,15 +48,27 @@ namespace SV.Application.ServiceImp
                 return result;
             }
 
-            result.Data = new LoginOutput
+			result.Data = new LoginOutput
             {
-                UserName = user.Name,
-                Menus = GetPermissionsByRoleIds(user.UserRoles.Select(z => z.RoleId).ToList())
+				UserId = user.Id,
+                User = user.Name,
+				Role = GetRoleName(user.UserRoles.Select(z => z.Role.Name)),
+				Menus = GetPermissionsByRoleIds(user.UserRoles.Select(z => z.RoleId).ToList())
             };
             return result;
         }
 
-        public CreateResult<long> Register(RegisterInput input)
+		private string GetRoleName(IEnumerable<string> enumerable)
+		{
+			var result = "";
+			foreach (var name in enumerable)
+			{
+				result += name + ",";
+			}
+			return result.Substring(0, result.Length - 1);
+		}
+
+		public CreateResult<long> Register(RegisterInput input)
         {
             var result = GetDefault<CreateResult<long>>();
             if (IsHasSameName(input.Name))
@@ -103,6 +115,8 @@ namespace SV.Application.ServiceImp
             return result;
         }
 
+
+	  
 	    private List<MenuDto> GetPermissionsByRoleIds(List<long> roleIds)
 	    {
 		    var permissions= _permissionQuery.GetPermissionsByRoleIds(roleIds);

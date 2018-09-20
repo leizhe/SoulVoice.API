@@ -1,26 +1,32 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SV.Application.Exceptions;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
+using SV.API.Jwt;
 
 namespace SV.API.Controllers
 {
 	[Produces("application/json")]
 	public class AccountController : Controller
     {
-        private readonly IAccountService _accountService;
-        public AccountController(IAccountService accountService)
+	    private readonly JwtSettings _jwtSettings;
+		private readonly IAccountService _accountService;
+        public AccountController(IOptions<JwtSettings> jwtSettingsAccesser, IAccountService accountService)
         {
-            _accountService = accountService;
+	        _jwtSettings = jwtSettingsAccesser.Value;
+			_accountService = accountService;
         }
 
         [HttpGet]
         [Route("api/account/Login")]
         public GetResult<LoginOutput> Login(string nameOrEmail, string passWord)
         {
-            return _accountService.Login(nameOrEmail,passWord);
+			var result = _accountService.Login(nameOrEmail, passWord);
+	        result.Data.Token = JwtAuthorize.GenToken(_jwtSettings,result.Data);
+	        return result;
         }
 
         [HttpPost]

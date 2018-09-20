@@ -7,7 +7,10 @@ namespace SV.Application.Output
 {
     public class LoginOutput
     {
-        public string UserName { get; set; }
-        public List<MenuDto> Menus { get; set; }
+		public long UserId { get; set; }
+        public string User { get; set; }
+	    public string Role { get; set; }
+		public List<MenuDto> Menus { get; set; }
+		public object Token { get; set; }
     }
 }
