@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 using AutoMapper;
 using IdentityModel;
@@ -39,25 +40,8 @@ namespace SV.API
             DbContextOption.CommandString = Configuration.GetConnectionString("CommandDB");
             DbContextOption.QueryString = Configuration.GetConnectionString("QueryDB");
 
-            services.AddMvc(option =>
-            {
-                option.Filters.Add(new GlobalExceptionFilter());
-            });
-
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info
-                {
-                    Version = "v1",
-                    Title = "SoulVoice API",
-                    Description = "For SoulVoice Web&&App",
-                });
-            });
-
-            services.AddAutoMapper();
-
-			#region Auth 
-			//将appsettings.json中的JwtSettings部分文件读取到JwtSettings中，这是给其他地方用的
+	        #region Auth 
+	        //将appsettings.json中的JwtSettings部分文件读取到JwtSettings中，这是给其他地方用的
 	        services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
 	        //由于初始化的时候我们就需要用，所以使用Bind的方式读取配置
@@ -65,7 +49,7 @@ namespace SV.API
 	        var jwtSettings = new JwtSettings();
 	        Configuration.Bind("JwtSettings", jwtSettings);
 
-			services.AddAuthentication(x =>
+	        services.AddAuthentication(x =>
 		        {
 			        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
 			        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,8 +58,8 @@ namespace SV.API
 		        {
 			        o.TokenValidationParameters = new TokenValidationParameters
 			        {
-				        NameClaimType = JwtClaimTypes.Name,
-				        RoleClaimType = JwtClaimTypes.Role,
+				        //NameClaimType = JwtClaimTypes.Name,
+				        //RoleClaimType = JwtClaimTypes.Role,
 
 				        //Token颁发机构
 				        ValidIssuer = jwtSettings.Issuer,
@@ -101,6 +85,42 @@ namespace SV.API
 			        };
 		        });
 	        #endregion
+
+			services.AddMvc(option =>
+            {
+                option.Filters.Add(new GlobalExceptionFilter());
+            });
+
+
+	      
+			services.AddSwaggerGen(c =>
+            {
+	            //c.OperationFilter<SwaggerFileUploadFilter>();//增加文件过滤处理
+	            //var security = new Dictionary<string, IEnumerable<string>> { { "Bearer", new string[] { } }, };
+	            //c.AddSecurityRequirement(security);//添加一个必须的全局安全信息，和AddSecurityDefinition方法指定的方案名称要一致
+	            //c.AddSecurityRequirement(security);
+				c.SwaggerDoc("v1", new Info
+                {
+                    Version = "v1",
+                    Title = "SoulVoice API",
+                    Description = "For SoulVoice Web&&App",
+                });
+
+	            //var security = new Dictionary<string, IEnumerable<string>> { { "Bearer", new string[] { } }, };
+	            //c.(security);
+				c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+				{
+					
+					Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+					Name = "Authorization",
+					In = "header",
+					Type = "apiKey"
+				});
+				//c.OperationFilter<HttpHeaderFilter>();
+			});
+
+            services.AddAutoMapper();
+
 			
 			return AutofacService.InitIoC(services);
         }
@@ -113,7 +133,9 @@ namespace SV.API
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseStaticFiles();
+	        app.UseAuthentication();
+
+			app.UseStaticFiles();
 
             app.UseMvc(routes =>
             {

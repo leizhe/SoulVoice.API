@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using SV.Application.Output;
 
@@ -14,7 +10,7 @@ namespace SV.API.Jwt
 {
     public static class JwtAuthorize
     {
-	    public static object GenToken(JwtSettings jwtSettings, LoginOutput output)
+	    public static object IssueToken(JwtSettings jwtSettings, LoginOutput output)
 	    {
 		    var authTime = DateTime.UtcNow;
 		    var expiresAt = authTime.AddDays(jwtSettings.Validity);
@@ -47,54 +43,42 @@ namespace SV.API.Jwt
 		    };
 		}
 
-		//public static FunctionUser GetControllerAuthUser(ApiController controller)
-		//{
-		//	if (LoginUser != null) return LoginUser;
-		//	FunctionUser u = new FunctionUser();
+		internal static AuthUser AuthUser(Controller controller)
+		{
+			if (!controller.HttpContext.Request.Headers.ContainsKey("Authorization"))
+			{
+				return null;
+			}
+			var tokenHeader = controller.HttpContext.Request.Headers["Authorization"].ToString();
+			return SerializeToken(tokenHeader);
+		}
+		
+		private static AuthUser SerializeToken(string jwtStr)
+		{
+		    if (jwtStr.Contains("Bearer ")) jwtStr = jwtStr.Replace("Bearer ", "");
+		    var jwtHandler = new JwtSecurityTokenHandler();
+		    var jwtToken = jwtHandler.ReadJwtToken(jwtStr);
+		    object id; object name; object role;
+			try
+		    {
+			    jwtToken.Payload.TryGetValue(ClaimTypes.Sid, out id);
+				jwtToken.Payload.TryGetValue(ClaimTypes.Name, out name);
+				jwtToken.Payload.TryGetValue(ClaimTypes.Role, out role);
+		    }
+		    catch (Exception e)
+		    {
+			    Console.WriteLine(e);
+			    throw;
+		    }
+		    if (id == null||name == null|| role == null) return null;
+			var tm = new AuthUser
+		    {
+			    UserId = long.Parse(id.ToString()),
+			    User = name.ToString(),
+			    Role = role.ToString()
+		    };
+		    return tm;
+		}
 
-
-
-		//	try
-		//	{
-		//		ClaimsPrincipal user = controller.User as ClaimsPrincipal;
-
-		//		u.EID = user.Claims.First(x => x.Type == "samaccount_name").Value;
-
-		//		if (new Regex(@"T09493.ECH.[\d-]{3}").IsMatch(u.EID))
-		//		{
-
-
-		//			if (u.EID == "T09493.ECH.118" || u.EID == "T09493.ECH.119" || u.EID == "T09493.ECH.120" || u.EID == "T09493.ECH.121")
-		//			{
-		//				u.IsThirdParty = true;
-		//			}
-		//			else
-		//			{
-		//				u.IsThirdParty = false;
-		//			}
-		//			// to be implement after eso ready end
-		//		}
-		//		else
-		//		{
-
-		//			u.Email = user.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
-		//			u.PeopleKey = user.Claims.First(x => x.Type == "peoplekey").Value;
-		//			u.PersonnelNumber = user.Claims.First(x => x.Type == "personnelnbr").Value;
-		//			u.FirstName = user.Claims.First(x => x.Type == "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname").Value;
-		//			u.LastName = user.Claims.First(x => x.Type == "sn").Value;
-		//			u.DisplayName = u.LastName + " " + u.FirstName;
-		//			u.CompanyCd = user.Claims.First(x => x.Type == "company_cd").Value;
-		//			u.Groups = (from claim in user.Claims
-		//						where claim.Type == "http://schemas.xmlsoap.org/claims/Group"
-		//						select claim.Value).ToArray();
-		//		}
-		//	}
-		//	catch (Exception e)
-		//	{
-
-		//	}
-
-		//	return u;
-		//}
 	}
 }

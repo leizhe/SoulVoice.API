@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SV.Application.Dtos;
 using SV.Application.Exceptions;
@@ -19,6 +20,7 @@ namespace SV.API.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		[Route("api/Classify/All")]
 		public GetResults<ClassifyDto> GetAll()
 		{

@@ -10,6 +10,7 @@ using SV.API.Jwt;
 namespace SV.API.Controllers
 {
 	[Produces("application/json")]
+	[Route("api/[controller]/[action]")]
 	public class AccountController : Controller
     {
 	    private readonly JwtSettings _jwtSettings;
@@ -21,16 +22,14 @@ namespace SV.API.Controllers
         }
 
         [HttpGet]
-        [Route("api/account/Login")]
         public GetResult<LoginOutput> Login(string nameOrEmail, string passWord)
         {
 			var result = _accountService.Login(nameOrEmail, passWord);
-	        result.Data.Token = JwtAuthorize.GenToken(_jwtSettings,result.Data);
+	        result.Data.Token = JwtAuthorize.IssueToken(_jwtSettings,result.Data);
 	        return result;
         }
 
         [HttpPost]
-        [Route("api/account/Register")]
         public CreateResult<long> Register([FromBody]RegisterInput input)
         {
             if (ModelState.IsValid)
