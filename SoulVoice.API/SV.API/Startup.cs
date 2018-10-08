@@ -58,11 +58,11 @@ namespace SV.API
 		        {
 			        o.TokenValidationParameters = new TokenValidationParameters
 			        {
-				        //NameClaimType = JwtClaimTypes.Name,
-				        //RoleClaimType = JwtClaimTypes.Role,
+						NameClaimType = JwtClaimTypes.Name,
+						RoleClaimType = JwtClaimTypes.Role,
 
-				        //Token颁发机构
-				        ValidIssuer = jwtSettings.Issuer,
+						//Token颁发机构
+						ValidIssuer = jwtSettings.Issuer,
 				        //颁发给谁
 				        ValidAudience = jwtSettings.Audience,
 				        //这里的key要进行加密，需要引用Microsoft.IdentityModel.Tokens
