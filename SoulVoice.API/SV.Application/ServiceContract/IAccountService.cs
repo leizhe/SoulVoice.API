@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SV.Application.Input;
+﻿using SV.Application.Input;
 using SV.Application.Output;
 
 namespace SV.Application.ServiceContract

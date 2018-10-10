@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using SV.Entity.Command;
 
 namespace SV.Application.Dtos
 {

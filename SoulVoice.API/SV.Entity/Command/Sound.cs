@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using SV.Entity.Auditing;
 
 namespace SV.Entity.Command

@@ -1,7 +1,5 @@
-﻿using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using SV.Application.Exceptions;
 using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
@@ -32,7 +30,6 @@ namespace SV.API.Controllers
         {
 	        CheckModelState();
 	        return _accountService.Register(input);
-
 		}
 
     }

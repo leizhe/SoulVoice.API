@@ -9,12 +9,12 @@ namespace SV.Application
 {
     public class AutoMapperProfile : AutoMapper.Profile
     {
-        private readonly IMapper _mapper;
+        //private readonly IMapper _mapper;
 
-        public AutoMapperProfile(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
+        //public AutoMapperProfile(IMapper mapper)
+        //{
+        //    _mapper = mapper;
+        //}
         public AutoMapperProfile()
         {
 			CreateMap<Entity.Query.User, Entity.Command.User>();

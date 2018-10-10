@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using SV.Application.Dtos;
-
-namespace SV.Application.Input
+﻿namespace SV.Application.Input
 {
     public class AlbumInput
 	{

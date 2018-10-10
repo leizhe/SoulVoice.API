@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using DapperExtensions.Mapper;
 using SV.Entity.Auditing;
-using SV.Entity.Command;
 
 namespace SV.Entity.Query
 {

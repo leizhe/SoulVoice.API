@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace SV.Entity.Command
+﻿namespace SV.Entity.Command
 {
     public sealed class Action : BaseEntity
     {

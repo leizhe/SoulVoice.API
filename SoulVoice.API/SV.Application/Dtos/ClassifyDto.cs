@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using SV.Entity;
-using SV.Entity.Command;
-
-namespace SV.Application.Dtos
+﻿namespace SV.Application.Dtos
 {
 	public class ClassifyDto : BaseEntityDto
 	{

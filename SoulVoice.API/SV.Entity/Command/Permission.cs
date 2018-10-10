@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace SV.Entity.Command
+﻿namespace SV.Entity.Command
 {
     public sealed class Permission : BaseEntity
     {
