@@ -16,8 +16,8 @@ namespace SV.Application
         {
             IocContainer.Register(typeof(DapperRepositoryBase<>).Assembly, "QueryRepository");
             IocContainer.Register(typeof(EntityFrameworkRepositoryBase<>).Assembly, "CommandRepository");
-            IocContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
-            IocContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
+            //IocContainer.Register(typeof(DapperRepositoryBase<>), typeof(IDapperQueryRepository<>));
+            //IocContainer.Register(typeof(EntityFrameworkRepositoryBase<>), typeof(IEntityFrameworkCommandRepository<>));
             IocContainer.Register(typeof(BaseService).Assembly, "Service");
             return IocContainer.Build(services);
         }

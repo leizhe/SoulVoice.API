@@ -9,9 +9,7 @@ using SV.API.Jwt;
 namespace SV.API.Controllers
 {
 	[Authorize]
-	[Produces("application/json")]
-	[Route("api/[controller]/[action]")]
-	public class AlbumController : Controller
+	public class AlbumController : BaseController
 	{
 		private readonly IAlbumService _albumService;
 		public AlbumController(IAlbumService albumService)
@@ -35,6 +33,7 @@ namespace SV.API.Controllers
 		[HttpGet]
 		public GetResults<AlbumDto> Filter(PageFilterInput input)
 		{
+			CheckModelState();
 			return _albumService.FilterAlbum(input);
 		}
 
@@ -47,12 +46,14 @@ namespace SV.API.Controllers
 		[HttpPost]
 		public CreateResult<long> Add(AlbumInput input)
 		{
+			CheckModelState();
 			return _albumService.AddAlbum(input);
 		}
 
 		[HttpPut]
 		public UpdateResult Update(AlbumInput input)
 		{
+			CheckModelState();
 			return _albumService.UpdateAlbum(input);
 		}
 	}

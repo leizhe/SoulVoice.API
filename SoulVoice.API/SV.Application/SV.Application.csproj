@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Exceptions\**" />
+    <EmbeddedResource Remove="Exceptions\**" />
+    <None Remove="Exceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="ServiceContract\IPermissionService.cs" />
     <Compile Remove="ServiceContract\IRoleService.cs" />
     <Compile Remove="ServiceContract\ITestService.cs" />
@@ -16,15 +22,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Exceptions\BaseException.cs" />
+    <Compile Include="Exceptions\ModelStateErrorException.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="3.2.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\SV.Repository\SV.Repository.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Exceptions\Account\" />
   </ItemGroup>
 
 </Project>

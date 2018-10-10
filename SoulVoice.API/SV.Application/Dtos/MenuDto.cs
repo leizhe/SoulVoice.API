@@ -8,7 +8,6 @@ namespace SV.Application.Dtos
     {
         public string Url { get; set; }
         public string Name { get; set; }
-
         public List<ActionDto> Actions { get; set; }
     }
 }

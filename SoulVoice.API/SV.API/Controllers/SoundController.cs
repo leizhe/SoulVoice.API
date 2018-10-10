@@ -10,20 +10,18 @@ using SV.Application.ServiceContract;
 namespace SV.API.Controllers
 {
 	[Authorize]
-	public class ClassifyController : BaseController
+	public class SoundController : BaseController
 	{
-		private readonly IClassifyService _classifyService;
-		public ClassifyController(IClassifyService classifyService)
+		private readonly ISoundService _soundService;
+		public SoundController(ISoundService soundService)
 		{
-			_classifyService = classifyService;
+			_soundService = soundService;
 		}
 
 		[HttpGet]
-		
-		//[Route("api/Classify/All")]
-		public GetResults<ClassifyDto> All()
+		public GetResults<SoundDto> Page(long albumId, PageInput input)
 		{
-			return _classifyService.GetAll();
+			return _soundService.GetSoundPageByAlbumId(albumId, input);
 		}
 
 	}

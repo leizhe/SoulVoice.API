@@ -9,10 +9,8 @@ using SV.API.Jwt;
 
 namespace SV.API.Controllers
 {
-	[Produces("application/json")]
-	[Route("api/[controller]/[action]")]
-	public class AccountController : Controller
-    {
+	public class AccountController : BaseController
+	{
 	    private readonly JwtSettings _jwtSettings;
 		private readonly IAccountService _accountService;
         public AccountController(IOptions<JwtSettings> jwtSettingsAccesser, IAccountService accountService)
@@ -32,13 +30,10 @@ namespace SV.API.Controllers
         [HttpPost]
         public CreateResult<long> Register([FromBody]RegisterInput input)
         {
-            if (ModelState.IsValid)
-            {
-                return _accountService.Register(input);
-            }
-            throw new ModelStateErrorException();
+	        CheckModelState();
+	        return _accountService.Register(input);
 
-        }
+		}
 
     }
 }
