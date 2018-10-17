@@ -22,6 +22,9 @@ namespace SV.Application
 	        CreateMap<Entity.Query.Action, ActionDto>();
 	        CreateMap<Entity.Query.Classify, ClassifyDto>();
 	        CreateMap<Entity.Query.Sound, SoundDto>();
-        }
+	       
+			
+
+		}
     }
 }

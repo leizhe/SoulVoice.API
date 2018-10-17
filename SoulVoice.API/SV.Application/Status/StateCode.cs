@@ -19,9 +19,11 @@
         UserPhoneHasExist = 0x2003,
         UserEmailHasExist = 0x2004,
         UserNameHasExist = 0x2005,
-		//1.Album
+		//Album
 	    AlbumNotExist = 0x3000,
 	    AlbumNameHasExist = 0x3001,
+		//Subscription
+	    SubscriptionExist = 0x4000,
 
 		//2.hkjhk
 

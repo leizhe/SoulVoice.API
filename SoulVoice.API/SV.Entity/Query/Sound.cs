@@ -4,7 +4,7 @@ using SV.Entity.Auditing;
 
 namespace SV.Entity.Query
 {
-	public sealed class Sound : BaseEntity, ICreationAudited
+	public sealed class Sound : BaseEntity, ICreationAudited,IEntity
 	{
 		public long AlbumId { get; set; }
 		public string Name { get; set; }

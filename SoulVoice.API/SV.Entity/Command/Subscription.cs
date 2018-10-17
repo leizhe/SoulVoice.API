@@ -7,5 +7,6 @@ namespace SV.Entity.Command
 		public long AlbumId { get; set; }
 		public long? Subscriber { get; set; }
 		public DateTime SubscriptionDate { get; set; }
+		public Album Album { get; set; }
 	}
 }
