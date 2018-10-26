@@ -13,9 +13,9 @@ namespace SV.Repository.Query
 		public List<Subscription> GetPage(int pageNum, int pageSize, out long outTotal, string @where = null, object sortList = null)
 		{
 			var baseSql = BaseIncludeSubscriptionSql();
-			var commandSql = GetPageSql(baseSql, "subscription", "s", pageNum, pageSize) + where;
+			var pageSql = GetPageSql(baseSql, "subscription", "s", pageNum, pageSize) + where;
 			var lookup = new Dictionary<long, Subscription>();
-			using (var multi = Conn.QueryMultiple(commandSql))
+			using (var multi = Conn.QueryMultiple(pageSql))
 			{
 				outTotal = multi.Read<int>().Single();
 				multi.Read(FillDicIncludeSound(lookup), splitOn: "Id");
