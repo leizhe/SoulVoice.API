@@ -55,7 +55,11 @@ namespace SV.Application.ServiceImp
 
 		public GetResults<SubscriptionDto> GetSubscriptionPageBySubscriber(long subscriber, PageInput input)
 		{
-			throw new System.NotImplementedException();
+			var result = GetDefault<GetResults<SubscriptionDto>>();
+			var subscriptions = _subscriptionQuery.GetPageBySubscriber(input.Current, input.Size, out var pageCount, subscriber);
+			result.Data= _mapper.Map<List<SubscriptionDto>>(subscriptions);
+			result.Total = pageCount;
+			return result;
 		}
 
 		private bool IsExists(SubscriptionInput input)
