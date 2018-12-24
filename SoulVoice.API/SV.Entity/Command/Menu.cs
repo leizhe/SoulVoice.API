@@ -12,7 +12,8 @@ namespace SV.Entity.Command
         public bool IsVisible { get; set; }
         public bool IsLeaf { get; set; }
         public string Pic { get; set; }
-
-        public ICollection<Action> Actions { get; set; }
+	    public bool IsDefault { get; set; }
+		public int Client { get; set; }
+		public ICollection<Action> Actions { get; set; }
     }
 }
