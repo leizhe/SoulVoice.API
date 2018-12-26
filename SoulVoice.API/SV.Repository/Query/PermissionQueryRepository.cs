@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Dapper;
-using SV.Entity.Query;
+using SV.Entity;
 using SV.Repository.Base;
 using SV.Repository.Core.Query;
 

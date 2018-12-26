@@ -36,7 +36,7 @@ namespace SV.Application.ServiceImp
 				result.StateCode = (int)StatusCode.SubscriptionExist;
 				return result;
 			}
-			var subscription = _mapper.Map<Entity.Command.Subscription>(input);
+			var subscription = _mapper.Map<Entity.Subscription>(input);
 			subscription.SubscriptionDate=DateTime.UtcNow;
 			_subscriptionCommand.Add(subscription);
 			_subscriptionCommand.Commit();

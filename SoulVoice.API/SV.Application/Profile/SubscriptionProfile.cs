@@ -14,8 +14,8 @@ namespace SV.Application.Profile
 	    }
 	    public SubscriptionProfile()
 	    {
-		    CreateMap<SubscriptionInput, Entity.Command.Subscription>();
-		    CreateMap<Entity.Query.Subscription, SubscriptionDto>()
+		    CreateMap<SubscriptionInput, Entity.Subscription>();
+		    CreateMap<Entity.Subscription, SubscriptionDto>()
 			    //.ForMember(sub => sub.AlbumName, opt => opt.MapFrom(p => p.Album.Name))
 			    //.ForMember(sub => sub.AlbumPic, opt => opt.MapFrom(p => p.Album.Pic))
 			    //.ForMember(sub => sub.AlbumMemo, opt => opt.MapFrom(p => p.Album.Memo))

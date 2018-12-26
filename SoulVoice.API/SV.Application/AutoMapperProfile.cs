@@ -17,11 +17,11 @@ namespace SV.Application
         //}
         public AutoMapperProfile()
         {
-			CreateMap<Entity.Query.User, Entity.Command.User>();
-	        CreateMap<Entity.Query.Menu, MenuDto>();
-	        CreateMap<Entity.Query.Action, ActionDto>();
-	        CreateMap<Entity.Query.Classify, ClassifyDto>();
-	        CreateMap<Entity.Query.Sound, SoundDto>();
+			//CreateMap<Entity.Query.User, Entity.Command.User>();
+	        CreateMap<Entity.Menu, MenuDto>();
+	        CreateMap<Entity.Action, ActionDto>();
+	        CreateMap<Entity.Classify, ClassifyDto>();
+	        CreateMap<Entity.Sound, SoundDto>();
 	       
 			
 

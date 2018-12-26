@@ -14,9 +14,9 @@ namespace SV.Application.Profile
 	    }
 	    public AlbumProfile()
 	    {
-			CreateMap<Entity.Query.Album, AlbumDto>()
+			CreateMap<Entity.Album, AlbumDto>()
 			    .ForMember(dest => dest.CreatorUserName, opt => opt.MapFrom(p => p.CreatorUser.Name));
-		    CreateMap<AlbumInput, Entity.Command.Album>();
+		    CreateMap<AlbumInput, Entity.Album>();
 			//CreateMap<Entity.Query.User, UserDto>()
 			//    .ConstructUsing(
 			//        dto =>

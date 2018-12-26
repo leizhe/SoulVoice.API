@@ -1,4 +1,4 @@
-﻿using SV.Entity.Command;
+﻿using SV.Entity;
 using SV.Repository.Base;
 using SV.Repository.Core.Command;
 

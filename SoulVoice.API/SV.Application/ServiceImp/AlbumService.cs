@@ -6,7 +6,7 @@ using SV.Application.Input;
 using SV.Application.Output;
 using SV.Application.ServiceContract;
 using SV.Application.Status;
-using SV.Entity.Command;
+using SV.Entity;
 using SV.Repository.Core.Command;
 using SV.Repository.Core.Query;
 

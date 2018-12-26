@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Dapper;
-using SV.Entity.Query;
+using SV.Entity;
 using SV.Repository.Base;
 using SV.Repository.Core.Query;
 
@@ -50,7 +50,7 @@ namespace SV.Repository.Query
             return lookup.Values;
         }
 
-        private Func<Menu, Entity.Query.Action,Menu> FillDic(Dictionary<long, Menu> lookup)
+        private Func<Menu, Entity.Action,Menu> FillDic(Dictionary<long, Menu> lookup)
         {
             return (m, a) =>
             {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SV.Common.Options;
-using SV.Entity.Command;
+using SV.Entity;
 using System;
 
 namespace SV.Repository.Base
@@ -50,7 +50,7 @@ namespace SV.Repository.Base
         public DbSet<UserRole> UserRoles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<Menu> Menus { get; set; }
-        public DbSet<Entity.Command.Action> Actions { get; set; }
+        public DbSet<Entity.Action> Actions { get; set; }
 	    public DbSet<Classify> Classifies { get; set; }
 	    public DbSet<Album> Albums { get; set; }
 	    public DbSet<AlbumComment> AlbumComments { get; set; }
@@ -67,7 +67,7 @@ namespace SV.Repository.Base
             modelBuilder.Entity<Permission>().ToTable("Permission");
             modelBuilder.Entity<RolePermission>().ToTable("RolePermission");
             modelBuilder.Entity<Menu>().ToTable("Menu");
-            modelBuilder.Entity<Entity.Command.Action>().ToTable("Action");
+            modelBuilder.Entity<Entity.Action>().ToTable("Action");
 	        modelBuilder.Entity<Classify>().ToTable("Classify");
 	        modelBuilder.Entity<Album>().ToTable("Album");
 	        modelBuilder.Entity<AlbumComment>().ToTable("AlbumComment");

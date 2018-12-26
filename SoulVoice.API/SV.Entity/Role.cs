@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using DapperExtensions.Mapper;
-namespace SV.Entity.Query
+namespace SV.Entity
 {
     [Serializable]
     public class Role : BaseEntity

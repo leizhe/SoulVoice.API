@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DapperExtensions.Mapper;
 using SV.Entity.Auditing;
 
-namespace SV.Entity.Query
+namespace SV.Entity
 {
     [Serializable]
     public class User : BaseEntity, IHasCreationTime, IEntity

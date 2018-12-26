@@ -5,14 +5,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Command\**" />
     <Compile Remove="Dmx\**" />
+    <Compile Remove="Query\**" />
+    <EmbeddedResource Remove="Command\**" />
     <EmbeddedResource Remove="Dmx\**" />
+    <EmbeddedResource Remove="Query\**" />
+    <None Remove="Command\**" />
     <None Remove="Dmx\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Command\BaseEntityC.cs" />
-    <Compile Remove="Query\BaseEntityQ.cs" />
+    <None Remove="Query\**" />
   </ItemGroup>
 
   <ItemGroup>

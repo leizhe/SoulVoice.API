@@ -2,22 +2,22 @@
 using DapperExtensions.Mapper;
 using SV.Entity.Auditing;
 
-namespace SV.Entity.Query
+namespace SV.Entity
 {
-	public sealed class AlbumComment : BaseEntity, ICreationAudited
+	public sealed class SoundComment : BaseEntity, ICreationAudited
 	{
-		public long AlbumId { get; set; }
+		public long SoundId { get; set; }
 		public long? ParentCommentId { get; set; }
 		public string Content { get; set; }
 		public long? CreatorUserId { get; set; }
 		public DateTime CreationTime { get; set; }
-		public Album Album { get; set; }
+		public Sound Sound { get; set; }
 		[Serializable]
-		public sealed class AlbumCommentOrmMapper : ClassMapper<AlbumComment>
+		public sealed class SoundCommentOrmMapper : ClassMapper<SoundComment>
 		{
-			public AlbumCommentOrmMapper()
+			public SoundCommentOrmMapper()
 			{
-				Table("AlbumComment");
+				Table("SoundComment");
 				AutoMap();
 			}
 		}

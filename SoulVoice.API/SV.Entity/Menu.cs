@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DapperExtensions.Mapper;
 using SV.Entity.Auditing;
 
-namespace SV.Entity.Query
+namespace SV.Entity
 {
     public sealed class Menu : BaseEntity, IEntity
     {

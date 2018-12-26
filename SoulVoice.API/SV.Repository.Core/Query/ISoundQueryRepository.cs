@@ -1,4 +1,4 @@
-﻿using SV.Entity.Query;
+﻿using SV.Entity;
 
 namespace SV.Repository.Core.Query
 {

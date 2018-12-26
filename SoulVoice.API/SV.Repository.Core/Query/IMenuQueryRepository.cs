@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using SV.Entity.Query;
+using SV.Entity;
 
 namespace SV.Repository.Core.Query
 {

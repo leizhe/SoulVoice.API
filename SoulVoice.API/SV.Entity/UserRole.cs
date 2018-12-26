@@ -1,7 +1,7 @@
 ﻿using System;
 using DapperExtensions.Mapper;
 
-namespace SV.Entity.Query
+namespace SV.Entity
 {
     [Serializable]
     public sealed  class UserRole : BaseEntity
