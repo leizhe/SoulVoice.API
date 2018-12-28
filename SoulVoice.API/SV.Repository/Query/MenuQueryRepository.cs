@@ -10,15 +10,17 @@ namespace SV.Repository.Query
 {
     public class MenuQueryRepository : DapperRepositoryBase<Menu>, IMenuQueryRepository
 	{
-
-
-		public List<Menu> GetByIds(List<long> menulst, List<long> actionlst)
+		public List<Menu> GetDefault()
 		{
-			var where= $@"where m.Id IN({ GetIdsString(menulst)}) and a.Id IN({ GetIdsString(actionlst)})";
+			var where = $@"WHERE m.IsDefault = True";
 			return GetListByWhere(where);
 		}
 
-		
+		public List<Menu> GetByIds(List<long> menulst, List<long> actionlst)
+		{
+			var where= $@"WHERE m.Id IN({ GetIdsString(menulst)}) AND a.Id IN({ GetIdsString(actionlst)})";
+			return GetListByWhere(where);
+		}
 
 		public List<Menu> GetAll()
         {
@@ -66,6 +68,6 @@ namespace SV.Repository.Query
 			};
         }
 
-	
+		
 	}
 }
